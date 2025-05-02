@@ -1,106 +1,151 @@
 "use client"
 
-export default function ResumePreview({ data }: { data: any }) {
+import Image from 'next/image'
+import Link from 'next/link'
+
+export default function ModernResume({ data }: { data: any }) {
   if (!data) return null
 
   return (
-    <div className="max-w-[700px] mx-auto p-5 bg-white text-[#222] text-sm font-sans ">
+    <div className="max-w-[1200px] mx-auto text-[#222] text-xs font-sans p-6  grid grid-cols-[40%_60%] gap-6">
 
-      {/* Header */}
-      <div className="pb-2 mb-4">
-        <div className="border-b border-[#444] mb-2">
-          <div className="text-[16px] font-bold text-black mb-1 text-center ">{data.name}</div>
-        </div>
-        <div>
-          <div className="text-[9px] text-gray-600 mb-1 text-center">
-            {data.address} • {data.phone} • {data.email}
+      {/* Left Column */}
+      <div className="bg-gray-100 p-4 rounded-xl">
+
+        {/* Profile Picture */}
+        {data.image && (
+          <div className="flex justify-center mb-4">
+            <Image
+              src={data.imaagee}
+              alt="Profile"
+              width={100}
+              height={100}
+              className="rounded-full object-cover"
+            />
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Education */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
-          Education
-        </div>
-        {data.education.map((edu: any, idx: number) => (
-          <div key={idx} className="mb-2">
-            <div className="font-bold text-[13px]">{edu.school}</div>
-            <div className="flex justify-between text-[11px] text-gray-600 font-normal">
-              <span>{edu.degree}</span>
-              <span>{edu.year}</span>
+        {/* Contact Info */}
+        <div className="mb-6 text-center text-[11px] text-gray-700 space-y-3">
+          {data.name && <div className="font-bold text-[12px] text-black">{data.name}</div>}
+          {data.address && <div>{data.address}</div>}
+          {data.phone && <div>{data.phone}</div>}
+          {data.email && <div>{data.email}</div>}
+          {data.linkedin && (
+            <div>
+              <Link
+                href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline"
+              >
+                LinkedIn
+              </Link>
             </div>
-          </div>
-        ))}
-      </div>
+          )}
+        </div>
 
-      {/* Experience */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
-          Experience
-        </div>
-        {data.experience.map((exp: any, idx: number) => (
-          <div key={idx} className="mb-2">
-            <div className="flex justify-between text-[13px] font-bold">
-              <span>{exp.role} at {exp.company}</span>
-              <span className="text-[11px] text-gray-600 font-normal">{exp.duration}</span>
-            </div>
-            <ul className="list-disc pl-5 text-[11px] mt-1 space-y-1">
-              {Array.isArray(exp.description)
-                ? exp.description.map((item: string, i: number) => (
-                  <li key={i}>{item.trim()}</li>
-                ))
-                : typeof exp.description === 'string'
-                  ? exp.description
-                    .split("•")
-                    .filter((item: string) => item.trim() !== "")
-                    .map((item: string, i: number) => (
-                      <li key={i}>{item.trim()}</li>
-                    ))
-                  : null}
+        {/* Skills */}
+        {data.skills && (
+          <div className="mb-6">
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Skills</div>
+            <ul className="text-[10px] text-gray-700 list-disc pl-5">
+              {data.skills.map((skill: string, idx: number) => (
+                <li key={idx}>{skill}</li>
+              ))}
             </ul>
           </div>
-        ))}
-      </div>
+        )}
 
-      {/* Skills */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
-          Skills
-        </div>
-        <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2">
-          {data.skills.map((skill: string, idx: number) => (
-            <li key={idx} className="text-gray-800">{skill}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Certifications */}
-
-      {data.certifications && (
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
-            Certifications
+        {/* Certifications */}
+        {data.certifications && (
+          <div className="mb-6">
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Certifications</div>
+            {data.certifications.map((cert: any, idx: number) => (
+              <div key={idx} className="mb-2">
+                <div className="font-semibold text-[10px]">{cert.title}</div>
+                <div className="text-[10px] text-gray-600">{cert.institution}, {cert.year}</div>
+              </div>
+            ))}
           </div>
-          {data.certifications.map((cert: any, idx: number) => (
-            <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{cert.title} 
+        )}
+      </div>
+
+      {/* Right Column */}
+      <div className="space-y-4 text-[11px]">
+
+        {/* Summary */}
+        {data.summary && (
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-1">Summary</div>
+            <p className="text-[10px] text-gray-700 text-justify">{data.summary}</p>
+          </div>
+        )}
+
+        {/* Experience */}
+        {data.experience && (
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Experience</div>
+            {data.experience.map((exp: any, idx: number) => (
+              <div key={idx} className="mb-3">
+                <div className="flex justify-between text-[10px] font-semibold">
+                  <span>{exp.role} at {exp.company}</span>
+                  <span className="text-gray-500">{exp.duration}</span>
+                </div>
+                <ul className="list-disc pl-5 text-[10px] text-gray-600 mt-1 space-y-1 text-justify">
+                  {Array.isArray(exp.description)
+                    ? exp.description.map((item: string, i: number) => (
+                      <li key={i}>{item.trim()}</li>
+                    ))
+                    : typeof exp.description === 'string'
+                      ? exp.description
+                        .split("•")
+                        .filter((item: string) => item.trim() !== "")
+                        .map((item: string, i: number) => (
+                          <li key={i}>{item.trim()}</li>
+                        ))
+                      : null}
+                </ul>
               </div>
-              <div className="text-[11px] text-gray-600 font-normal flex justify-between">
-                <span>{cert.institution}</span>
-                <span>{cert.year}</span>
+            ))}
+          </div>
+        )}
+
+        {/* Education */}
+        {data.education && (
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Education</div>
+            {data.education.map((edu: any, idx: number) => (
+              <div key={idx} className="mb-2 text-[10px]">
+                <div className="font-semibold">{edu.school}</div>
+                <div className="flex justify-between text-gray-600">
+                  <span>{edu.degree}</span>
+                  <span>{edu.year}</span>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-
-      
-   
-
-   
-
+        {/* References */}
+        {data.references ? (
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+            {data.references.map((ref: any, idx: number) => (
+              <div key={idx} className="mb-2 text-[10px]">
+                <div className="font-semibold">{ref.name}</div>
+                <div className="text-gray-600">{ref.title} at {ref.company}</div>
+                <div className="text-gray-600">{ref.contact}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+            <div className="text-[10px] text-gray-600">Available upon request</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

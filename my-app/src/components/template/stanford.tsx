@@ -1,102 +1,172 @@
 "use client"
 
-export default function ({ data }: { data: any }) {
+import Link from 'next/link';
+
+export default function ResumePreview({ data }: { data: any }) {
   if (!data) return null
 
   return (
-    <div className="max-w-[700px] mx-auto p-6 bg-white text-[#111] font-serif text-[13px] leading-[1.5]">
+    <div className="max-w-[700px] mx-auto p-5 bg-white text-[#222] text-sm font-sans ">
 
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-[20px] font-bold">{data.name}</h1>
-        <div className="text-[11px] text-gray-700">
-          {data.address} | {data.phone} | {data.email}
+      <div className="pb-2 mb-4 border-b border-[#444]">
+        <div className="mb-6 border-b border-[#444]">
+          <div className="text-[16px] font-bold text-black mb-1 text-center ">{data.name}</div>
+          <div className="flex flex-col items-center text-[9px] text-gray-600 mb-1 text-center">
+            {data.address && <div>{data.address}</div>}
+            {data.phone && <div>{data.phone}</div>}
+            {data.email && <div>{data.email}</div>}
+            {data.linkedin && (
+              <div>
+                <Link
+                  href={
+                    data.linkedin.startsWith("http")
+                      ? data.linkedin
+                      : `https://${data.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline"
+                >
+                  {data.linkedin}
+                </Link>
+              </div>
+            )}
+          </div>
+
+
         </div>
-      </div>
 
-      {/* Education */}
-      <div className="mb-6">
-        <h2 className="uppercase text-[12px] font-bold tracking-wide mb-2">Education</h2>
-        {data.education.map((edu: any, idx: number) => (
-          <div key={idx} className="mb-3">
-            <div className="flex justify-between">
-              <div className="font-bold">{edu.school}</div>
-              <div className="text-[11px] text-gray-600">{edu.year}</div>
-            </div>
-            <div className="italic text-[12px] text-gray-800">{edu.degree}</div>
+        {/* Summary */}
+        <div className="mb-6 border-b border-[#444]">
+          <div className='mb-6 '>
+            {data.summary && (
+              <div className="mb-6 ">
+                <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide ">
+                  Summary
+                </div>
+                <div className="text-[11px] text-gray-600 font-normal ml-2 text-justify">
+                  {data.summary}
+                </div>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Experience */}
-      <div className="mb-6">
-        <h2 className="uppercase text-[12px] font-bold tracking-wide mb-2">Experience</h2>
-        {data.experience.map((exp: any, idx: number) => (
-          <div key={idx} className="mb-4">
-            <div className="flex justify-between font-bold">
-              <span>{exp.role}, {exp.company}</span>
-              <span className="text-[11px] text-gray-600 font-normal">{exp.duration}</span>
-            </div>
-            <div className="pl-4 text-[12px] mt-1 space-y-1">
-              {Array.isArray(exp.description)
-                ? exp.description.map((item: string, i: number) => (
-                    <div key={i}>– {item.trim()}</div>
-                  ))
-                : typeof exp.description === 'string'
-                  ? exp.description
-                      .split("•")
-                      .filter((item: string) => item.trim() !== "")
-                      .map((item: string, i: number) => (
-                        <div key={i}>– {item.trim()}</div>
-                      ))
-                  : null}
-            </div>
-          </div>
-        ))}
-      </div>
+        {/* Education */}
 
-      {/* Skills */}
-      <div className="mb-6">
-        <h2 className="uppercase text-[12px] font-bold tracking-wide mb-2">Skills</h2>
-        <div className="text-[12px]">{data.skills.join(", ")}</div>
-      </div>
-
-      {/* Certifications */}
-      {data.certifications && (
         <div className="mb-6">
-          <h2 className="uppercase text-[12px] font-bold tracking-wide mb-2">Certifications</h2>
-          {data.certifications.map((cert: any, idx: number) => (
-            <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px]">{cert.title}</div>
-              <div className="text-[11px] text-gray-600 flex justify-between">
-                <span>{cert.institution}</span>
-                <span>{cert.year}</span>
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide ">
+            Education
+          </div>
+          {data.education.map((edu: any, idx: number) => (
+            <div key={idx} className="mb-2 ml-2">
+              <div className="font-bold text-[13px]">{edu.school}</div>
+              <div className="flex justify-between text-[11px] text-gray-600 font-normal">
+                <span>{edu.degree}</span>
+                <span>{edu.year}</span>
               </div>
             </div>
           ))}
         </div>
-      )}
+      </div>
 
-      {/* Projects */}
-      {data.projects && data.projects.length > 0 && (
+
+      {/* Experience */}
+      <div className="mb-6 border-b border-[#444]">
         <div className="mb-6">
-          <h2 className="uppercase text-[12px] font-bold tracking-wide mb-2">Projects</h2>
-          {data.projects.map((proj: any, idx: number) => (
-            <div key={idx} className="mb-2">
-              <div className="font-bold">{proj.name}</div>
-              <div className="text-[12px]">{proj.description}</div>
-              {proj.link && (
-                <div className="text-[11px] text-blue-500 underline">
-                  <a href={proj.link} target="_blank" rel="noopener noreferrer">
-                    {proj.link}
-                  </a>
-                </div>
-              )}
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
+            Experience
+          </div>
+          {data.experience.map((exp: any, idx: number) => (
+            <div key={idx} className="mb-2 ml-2">
+              <div className="flex justify-between text-[11px] font-bold">
+                <span>{exp.role} at {exp.company}</span>
+                <span className="text-[10px] text-gray-600 font-normal">{exp.duration}</span>
+              </div>
+              <ul className="list-disc pl-5 text-[10px] mt-1 space-y-1 text-justify">
+                {Array.isArray(exp.description)
+                  ? exp.description.map((item: string, i: number) => (
+                    <li key={i}>{item.trim()}</li>
+                  ))
+                  : typeof exp.description === 'string'
+                    ? exp.description
+                      .split("•")
+                      .filter((item: string) => item.trim() !== "")
+                      .map((item: string, i: number) => (
+                        <li key={i}>{item.trim()}</li>
+                      ))
+                    : null}
+              </ul>
             </div>
           ))}
         </div>
-      )}
+      </div>
 
+      {/* Skills */}
+      <div className="mb-6 border-b border-[#444]">
+        <div className="mb-6">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
+            Skills
+          </div>
+          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2">
+            {data.skills.map((skill: string, idx: number) => (
+              <li key={idx} className="text-gray-800">{skill}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mb-6 border-b border-[#444]">
+        {data.certifications && (
+          <div className="mb-6">
+            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
+              Certifications
+            </div>
+            {data.certifications.map((cert: any, idx: number) => (
+              <div key={idx} className="mb-2 ml-2">
+                <div className="font-bold text-[12px] text-gray-800">{cert.title} </div>
+                <div className="text-[11px] text-gray-600 font-normal flex justify-between">
+                  <span>{cert.institution}</span>
+                  <span>{cert.year}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+
+      {/* References */}
+      <div className="mb-6 border-b border-[#444]">
+        {data.references ? (
+          <div className="mb-6">
+            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
+              References
+            </div>
+            {data.references.map((ref: any, idx: number) => (
+              <div key={idx} className="mb-2 ml-2">
+                <div className="font-bold text-[12px] text-gray-800">{ref.name}</div>
+                <div className="text-[11px] text-gray-600 font-normal">
+                  {ref.title} at {ref.company}
+                </div>
+                <div className="text-[11px] text-gray-600 font-normal">
+                  {ref.contact}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-6">
+            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
+              References
+            </div>
+            <div className="text-[11px] text-gray-600 font-normal ml-2">
+              References available upon request
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -25,6 +25,10 @@ export default function ResumeTemplateSelector() {
     setSelectedTemplate(null)
   }
 
+
+  const [color, setColor] = useState('#222')
+
+  
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Choose a Resume Template</h1>
@@ -60,10 +64,10 @@ export default function ResumeTemplateSelector() {
           className="
             max-h-[calc(90vh-80px)]
             overflow-auto
+         
           "
         >
-
-            <ResumePreview data={selectedTemplate?.sampleData} />
+          <ResumePreview data={selectedTemplate?.sampleData} />
           </div>
         </DialogContent>
       </Dialog>

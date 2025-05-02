@@ -1,3 +1,4 @@
+import Imaagee from '../../../public/profile.png'
 export const templates = [
 
   {
@@ -11,7 +12,9 @@ export const templates = [
   phone: "+1 (555) 123-4567",
   email: "john.harvard@example.com",
   address: "123 Massachusetts Ave, Cambridge, MA",
-  summary: "Experienced software engineer with a background in academic research and system architecture.",
+  linkedin: "https://www.linkedin.com/in/mark-justin-borja", 
+  imaagee:  "profile.png",
+  summary: "Experienced software engineer with a strong background in academic research and system architecture. Skilled in developing robust and scalable applications across a variety of platforms, with expertise in modern web technologies, API design, and database management. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Passionate about optimizing performance, maintaining clean code, and implementing innovative technical solutions to solve complex problems.",
   education: [
     {
       school: "Harvard University",

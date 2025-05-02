@@ -1,5 +1,7 @@
 "use client"
 
+import Link from 'next/link';
+
 export default function ResumePreview({ data }: { data: any }) {
   if (!data) return null
 
@@ -13,10 +15,37 @@ export default function ResumePreview({ data }: { data: any }) {
         </div>
         <div>
           <div className="text-[9px] text-gray-600 mb-1 text-center">
-            {data.address} • {data.phone} • {data.email}
+            {data.address} • {data.phone} • {data.email} •{" "}
+            {data.linkedin && (
+              <Link
+                href={
+                  data.linkedin.startsWith("http")
+                    ? data.linkedin
+                    : `https://${data.linkedin}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline"
+              >
+                {data.linkedin}
+              </Link>
+            )}
           </div>
+
         </div>
       </div>
+
+      {/* Summary */}
+      {data.summary && (
+        <div className="mb-6">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+            Summary
+          </div>
+          <div className="text-[11px] text-gray-600 font-normal text-justify">
+            {data.summary}
+          </div>
+        </div>
+      )}
 
       {/* Education */}
       <div className="mb-6">
@@ -76,7 +105,6 @@ export default function ResumePreview({ data }: { data: any }) {
       </div>
 
       {/* Certifications */}
-
       {data.certifications && (
         <div className="mb-6">
           <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
@@ -84,8 +112,7 @@ export default function ResumePreview({ data }: { data: any }) {
           </div>
           {data.certifications.map((cert: any, idx: number) => (
             <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{cert.title} 
-              </div>
+              <div className="font-bold text-[12px] text-gray-800">{cert.title} </div>
               <div className="text-[11px] text-gray-600 font-normal flex justify-between">
                 <span>{cert.institution}</span>
                 <span>{cert.year}</span>
@@ -95,11 +122,34 @@ export default function ResumePreview({ data }: { data: any }) {
         </div>
       )}
 
-
-      
-   
-
-   
+      {/* References */}
+      {data.references ? (
+        <div className="mb-6">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+            References
+          </div>
+          {data.references.map((ref: any, idx: number) => (
+            <div key={idx} className="mb-2">
+              <div className="font-bold text-[12px] text-gray-800">{ref.name}</div>
+              <div className="text-[11px] text-gray-600 font-normal">
+                {ref.title} at {ref.company}
+              </div>
+              <div className="text-[11px] text-gray-600 font-normal">
+                {ref.contact}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mb-6">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+            References
+          </div>
+          <div className="text-[11px] text-gray-600 font-normal text-center">
+            References available upon request
+          </div>
+        </div>
+      )}
 
     </div>
   )
