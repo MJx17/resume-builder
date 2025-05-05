@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-export default function ResumePreview({ data }: { data: any }) {
+export default function ResumePreview({ data, color }: { data: any, color: string }) {
   if (!data) return null
 
   return (
@@ -11,7 +11,7 @@ export default function ResumePreview({ data }: { data: any }) {
       {/* Header */}
       <div className="pb-2 mb-4">
         <div className="border-b border-[#444] mb-2">
-          <div className="text-[16px] font-bold text-black mb-1 text-center ">{data.name}</div>
+          <div className="text-[16px] font-bold text-black mb-1 text-center "  style={{color}}>{data.name}</div>
         </div>
         <div>
           <div className="text-[9px] text-gray-600 mb-1 text-center">
@@ -38,7 +38,7 @@ export default function ResumePreview({ data }: { data: any }) {
       {/* Summary */}
       {data.summary && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center"  style={{color}}>
             Summary
           </div>
           <div className="text-[11px] text-gray-600 font-normal text-justify">
@@ -49,7 +49,7 @@ export default function ResumePreview({ data }: { data: any }) {
 
       {/* Education */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
           Education
         </div>
         {data.education.map((edu: any, idx: number) => (
@@ -65,7 +65,7 @@ export default function ResumePreview({ data }: { data: any }) {
 
       {/* Experience */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
           Experience
         </div>
         {data.experience.map((exp: any, idx: number) => (
@@ -94,7 +94,7 @@ export default function ResumePreview({ data }: { data: any }) {
 
       {/* Skills */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
           Skills
         </div>
         <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2">
@@ -107,7 +107,7 @@ export default function ResumePreview({ data }: { data: any }) {
       {/* Certifications */}
       {data.certifications && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
             Certifications
           </div>
           {data.certifications.map((cert: any, idx: number) => (
@@ -125,7 +125,7 @@ export default function ResumePreview({ data }: { data: any }) {
       {/* References */}
       {data.references ? (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
             References
           </div>
           {data.references.map((ref: any, idx: number) => (
@@ -142,7 +142,7 @@ export default function ResumePreview({ data }: { data: any }) {
         </div>
       ) : (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center">
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
             References
           </div>
           <div className="text-[11px] text-gray-600 font-normal text-center">

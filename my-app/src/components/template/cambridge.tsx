@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaLinkedin } from 'react-icons/fa';
 
-export default function ModernResume({ data }: { data: any }) {
+export default function ModernResume({ data, color }: { data: any, color: string }) {
   if (!data) return null
 
   return (
@@ -13,9 +13,9 @@ export default function ModernResume({ data }: { data: any }) {
       <div className='max-w-[1200px] mx-auto text-[#222] text-xs font-sans p- space-y-6'>
 
         <div className="  border-[#0a0a0a] border-b-1">
-          <div className="text-center text-[#222] text-lg font-bold">
+          <div className="text-center text-[#222] text-lg font-bold" style={{color}}>
             {data.name}
-            <p className="font-normal text-[9px] pb-5">{data.title}</p>
+            <p className="font-normal text-[9px] pb-5" style={{color}}>{data.title}</p>
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export default function ModernResume({ data }: { data: any }) {
           <div className="text-[9px]">
             {data.summary && (
               <>
-                <div className="text-[10px] font-bold uppercase tracking-wide mb-1">Summary</div>
+                <div className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color}}>Summary </div>
                 <p className="text-[8px] text-gray-700 text-justify">{data.summary}</p>
               </>
             )}
@@ -53,7 +53,7 @@ export default function ModernResume({ data }: { data: any }) {
           <div className="w-1/2 pr-4 border-r border-[#0a0a0a] space-y-6">
             {/* Contact Section */}
             <div className="space-y-2">
-              <div className="uppercase font-bold text-[10px] mb-1">Contact</div>
+              <div className="uppercase font-bold text-[10px] mb-1" style={{color}}>Contact</div>
 
               {data.address && (
                 <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ export default function ModernResume({ data }: { data: any }) {
             {/* Education Section */}
             {data.education && (
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wide mb-2">Education</div>
+                <div className="text-[10px] font-bold uppercase tracking-wide mb-2" style={{color}}>Education</div>
                 {data.education.map((edu: any, idx: number) => (
                   <div key={idx} className="mb-2">
                     <div className="font-semibold">{edu.school}</div>
@@ -112,7 +112,7 @@ export default function ModernResume({ data }: { data: any }) {
             {/* Skills */}
             {data.skills && (
               <div className="mb-6">
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Skills</div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Skills</div>
                 <ul className="text-[10px] text-gray-700 list-disc pl-5">
                   {data.skills.map((skill: string, idx: number) => (
                     <li key={idx}>{skill}</li>
@@ -131,7 +131,7 @@ export default function ModernResume({ data }: { data: any }) {
             {/* Experience Section */}
             {data.experience && (
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Experience</div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Experience</div>
                 {data.experience.map((exp: any, idx: number) => (
                   <div key={idx} className="mb-3">
                     <div className="flex justify-between font-semibold">
@@ -160,7 +160,7 @@ export default function ModernResume({ data }: { data: any }) {
 
             {data.certifications && (
               <div className="mb-6">
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Certifications</div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Certifications</div>
                 {data.certifications.map((cert: any, idx: number) => (
                   <div key={idx} className="mb-2">
                     <div className="font-semibold text-[10px]">{cert.title}</div>
@@ -178,7 +178,7 @@ export default function ModernResume({ data }: { data: any }) {
 
             {data.references ? (
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
                 {data.references.map((ref: any, idx: number) => (
                   <div key={idx} className="mb-2 text-[10px]">
                     <div className="font-semibold">{ref.name}</div>
@@ -189,7 +189,7 @@ export default function ModernResume({ data }: { data: any }) {
               </div>
             ) : (
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
                 <div className="text-[10px] text-gray-600">Available upon request</div>
               </div>
             )}

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function ModernResume({ data }: { data: any }) {
+export default function ModernResume({ data, color }: { data: any, color: string }) {
   if (!data) return null
 
   return (
@@ -27,7 +27,7 @@ export default function ModernResume({ data }: { data: any }) {
 
         {/* Contact Info */}
         <div className="mb-6 text-left ml-2 text-[9px] text-gray-700 space-y-1">
-          {data.name && <div className="font-bold text-[12px] text-black text-center">{data.name}</div>}
+          {data.name && <div className="font-bold text-[12px] text-black text-center" style={{color}}>{data.name}</div>}
           {data.address && <div>{data.address}</div>}
           {data.phone && <div>{data.phone}</div>}
           {data.email && <div>{data.email}</div>}
@@ -48,7 +48,7 @@ export default function ModernResume({ data }: { data: any }) {
         {/* Skills */}
         {data.skills && (
           <div className="mb-6">
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Skills</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Skills</div>
             <ul className="text-[10px] text-gray-700 list-disc pl-5">
               {data.skills.map((skill: string, idx: number) => (
                 <li key={idx}>{skill}</li>
@@ -62,7 +62,7 @@ export default function ModernResume({ data }: { data: any }) {
 
         {data.certifications && (
           <div className="mb-6">
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Certifications</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Certifications</div>
             {data.certifications.map((cert: any, idx: number) => (
               <div key={idx} className="mb-2">
                 <div className="font-semibold text-[10px]">{cert.title}</div>
@@ -82,7 +82,7 @@ export default function ModernResume({ data }: { data: any }) {
         {/* Summary */}
         {data.summary && (
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-1">Summary</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{color}}>Summary </div>
             <p className="text-[10px] text-gray-700 text-justify">{data.summary}</p>
           </div>
         )}
@@ -90,7 +90,7 @@ export default function ModernResume({ data }: { data: any }) {
         {/* Experience */}
         {data.experience && (
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Experience</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Experience</div>
             {data.experience.map((exp: any, idx: number) => (
               <div key={idx} className="mb-3">
                 <div className="flex justify-between text-[10px] font-semibold">
@@ -119,7 +119,7 @@ export default function ModernResume({ data }: { data: any }) {
         {/* Education */}
         {data.education && (
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">Education</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Education</div>
             {data.education.map((edu: any, idx: number) => (
               <div key={idx} className="mb-2 text-[10px]">
                 <div className="font-semibold">{edu.school}</div>
@@ -135,7 +135,7 @@ export default function ModernResume({ data }: { data: any }) {
         {/* References */}
         {data.references ? (
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
             {data.references.map((ref: any, idx: number) => (
               <div key={idx} className="mb-2 text-[10px]">
                 <div className="font-semibold">{ref.name}</div>
@@ -146,7 +146,7 @@ export default function ModernResume({ data }: { data: any }) {
           </div>
         ) : (
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wide mb-2">References</div>
+            <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
             <div className="text-[10px] text-gray-600">Available upon request</div>
           </div>
         )}

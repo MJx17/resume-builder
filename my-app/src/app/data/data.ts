@@ -1,61 +1,57 @@
-
 export const templates = [
-
   {
     id: "harvard",
     name: "Harvard",
     description: "Classic academic layout with clean lines and serif fonts.",
     thumbnail: "harvard.jpg",
- sampleData: {
-  name: "John Harvard",
-  title: "Software Engineer",
-  phone: "+1 (555) 123-4567",
-  email: "john.harvard@example.com",
-  address: "123 Massachusetts Ave, Cambridge, MA",
-  linkedin: "https://www.linkedin.com/in/mark-justin-borja", 
-  image:  "/profile.png",
-  summary: "Experienced software engineer with a strong background in academic research and system architecture. Skilled in developing robust and scalable applications across a variety of platforms, with expertise in modern web technologies, API design, and database management. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Passionate about optimizing performance, maintaining clean code, and implementing innovative technical solutions to solve complex problems.",
-  education: [
-    {
-      school: "Harvard University",
-      degree: "BSc in Computer Science",
-      year: "2018 - 2022"
+    sampleData: {
+      name: "John Harvard",
+      title: "Software Engineer",
+      phone: "+1 (555) 123-4567",
+      email: "john.harvard@example.com",
+      address: "123 Massachusetts Ave, Cambridge, MA",
+      linkedin: "https://www.linkedin.com/in/mark-justin-borja",
+      image: "/profile.png",
+      summary:
+        "Experienced software engineer with a strong background in academic research and system architecture. Skilled in developing robust and scalable applications across a variety of platforms, with expertise in modern web technologies, API design, and database management. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Passionate about optimizing performance, maintaining clean code, and implementing innovative technical solutions to solve complex problems.",
+      education: [
+        {
+          school: "Harvard University",
+          degree: "BSc in Computer Science",
+          year: "2018 - 2022",
+        },
+        {
+          school: "MIT",
+          degree: "Certificate in Cloud Architecture",
+          year: "2023",
+        },
+      ],
+      experience: [
+        {
+          role: "Backend Developer",
+          company: "Meta",
+          duration: "2022 - Present",
+          description: [
+            "Built microservices with AWS Lambda and DynamoDB...",
+            "Integrated authentication using AWS Cognito...",
+          ],
+        },
+      ],
+      skills: ["Node.js", "PostgreSQL", "GraphQL", "Docker", "Kubernetes"],
+      certifications: [
+        {
+          title: "AWS Certified Developer",
+          institution: "Amazon",
+          year: "2022",
+        },
+        {
+          title: "Scrum Master",
+          institution: "Scrum Alliance",
+          year: "2021",
+        },
+      ],
     },
-    {
-      school: "MIT",
-      degree: "Certificate in Cloud Architecture",
-      year: "2023"
-    }
-  ],
-  experience: [
-    {
-      role: "Backend Developer",
-      company: "Meta",
-      duration: "2022 - Present",
-      description: [
-        "Built microservices with AWS Lambda and DynamoDB for internal developer tools, improving operational efficiency.",
-        "Integrated authentication using AWS Cognito and implemented detailed logging with CloudWatch.",
-        "Collaborated closely with senior engineers in Agile sprints, gaining hands-on experience with CI/CD pipelines and real-world production deployments."
-      ]
-    },
- 
-  ],
-  skills: ["Node.js", "PostgreSQL", "GraphQL", "Docker", "Kubernetes"],
-  certifications: [
-    {
-      title: "AWS Certified Developer",
-      institution: "Amazon",
-      year: "2022"
-    },
-    {
-      title: "Scrum Master",
-      institution: "Scrum Alliance",
-      year: "2021"
-    }
-  ],
- 
-}
-  },  
+  },
   {
     id: "stanford",
     name: "Stanford",
@@ -67,7 +63,9 @@ export const templates = [
       phone: "+1 (555) 123-4567",
       email: "jane.stanford@example.com",
       address: "123 Innovation Way, Palo Alto, CA 94301",
-      summary: "Creative designer focused on user experience and accessibility in web applications.",
+      linkedin: "https://www.linkedin.com/in/janestanford",
+      image: "/profile.png",
+      summary: "Innovative product designer with a strong focus on user experience, accessibility, and human-centered design. Experienced in building scalable and intuitive design systems that enhance usability and improve user engagement. Skilled in prototyping, UX research, and cross-functional collaboration, particularly in agile environments. Passionate about creating seamless digital experiences that empower users and solve real-world problems through thoughtful design.",
       education: [
         {
           school: "Stanford University",
@@ -85,16 +83,24 @@ export const templates = [
           role: "UX Designer",
           company: "Figma",
           duration: "2021 - Present",
-          description: "Led design systems projects and improved onboarding UX.",
+          description: ["Led design systems projects and improved onboarding UX."],
         },
         {
           role: "Design Intern",
           company: "Adobe",
           duration: "2020 - 2021",
-          description: "Helped redesign parts of the Illustrator interface for accessibility.",
+          description: ["Helped redesign parts of the Illustrator interface for accessibility."],
         },
       ],
       skills: ["Figma", "UX Research", "Prototyping", "HTML/CSS", "Adobe XD"],
+      certifications: [
+        {
+          title: "Google UX Design Certificate",
+          institution: "Coursera",
+          year: "2022",
+        },
+      ],
+      projects: ["Accessibility-Focused Design System", "Onboarding Flow Redesign"],
       languages: ["English", "Spanish"],
     },
   },
@@ -109,7 +115,9 @@ export const templates = [
       phone: "+44 20 7946 0958",
       email: "william.oxford@example.co.uk",
       address: "42 Scholar Street, Oxford, OX1 3PA, United Kingdom",
-      summary: "Analytical thinker with a strong foundation in statistics and machine learning.",
+      linkedin: "https://www.linkedin.com/in/williamoxford",
+      image: "/profile.png",
+      summary: "Highly analytical data scientist with deep expertise in machine learning, statistical modeling, and big data technologies. Proven track record of building predictive models that drive impactful insights in healthcare and research domains. Experienced in data pipeline development, feature engineering, and visualization using industry-standard tools. Enthusiastic about applying data-driven approaches to solve complex real-world problems and contribute to scientific innovation.",
       education: [
         {
           school: "University of Oxford",
@@ -127,17 +135,25 @@ export const templates = [
           role: "Data Analyst",
           company: "DeepMind",
           duration: "2018 - Present",
-          description: "Built data pipelines and predictive models for healthcare research.",
+          description: ["Built data pipelines and predictive models for healthcare research."],
         },
         {
           role: "Research Assistant",
           company: "Oxford Big Data Lab",
           duration: "2016 - 2018",
-          description: "Worked on a predictive analytics model for public health interventions.",
+          description: ["Worked on predictive analytics model for public health interventions."],
         },
       ],
       skills: ["Python", "Pandas", "TensorFlow", "Data Visualization", "Scikit-learn"],
+      certifications: [
+        {
+          title: "Google Professional Data Engineer",
+          institution: "Google",
+          year: "2019",
+        },
+      ],
       publications: ["Predictive Analytics in Public Health (Nature, 2020)"],
+      languages: ["English"],
     },
   },
   {
@@ -151,7 +167,9 @@ export const templates = [
       phone: "+1 617-555-0198",
       email: "alice.newton@mit.dev",
       address: "77 Massachusetts Ave, Cambridge, MA 02139, USA",
-      summary: "Problem-solver with hands-on experience in building scalable web applications from scratch.",
+      linkedin: "https://www.linkedin.com/in/alicenewton",
+      image: "/profile.png",
+      summary: "Full stack developer with a solid background in software engineering and cloud infrastructure. Specializes in building high-performance, scalable applications with modern JavaScript frameworks and backend services. Experienced in DevOps practices, CI/CD pipelines, and agile development environments. Committed to writing maintainable code, optimizing performance, and continuously learning cutting-edge technologies.",
       education: [
         {
           school: "MIT",
@@ -164,17 +182,25 @@ export const templates = [
           role: "Software Engineer",
           company: "Amazon",
           duration: "2019 - 2023",
-          description: "Built full-stack features for AWS dashboard with React and Go.",
+          description: ["Built full-stack features for AWS dashboard with React and Go."],
         },
         {
           role: "Open Source Contributor",
           company: "Node.js Foundation",
           duration: "2020 - Present",
-          description: "Contributed to performance improvements in the Node core.",
+          description: ["Contributed to performance improvements in the Node core."],
         },
       ],
       skills: ["React", "TypeScript", "Go", "AWS", "CI/CD", "Redis"],
+      certifications: [
+        {
+          title: "Certified Kubernetes Application Developer",
+          institution: "CNCF",
+          year: "2021",
+        },
+      ],
       projects: ["AWS Cost Explorer Clone", "Go-based Static Site Generator"],
+      languages: ["English"],
     },
   },
   {
@@ -188,7 +214,9 @@ export const templates = [
       phone: "+44 1223 555789",
       email: "edward.kingsley@law.cam.ac.uk",
       address: "12 Legal Lane, Cambridge, CB2 1TN, United Kingdom",
-      summary: "Dedicated legal researcher with publications in international law and governance.",
+      linkedin: "https://www.linkedin.com/in/edwardkingsley",
+      image: "/profile.png",
+      summary: "Dedicated legal researcher with extensive experience in international law, governance, and policy analysis. Adept at conducting in-depth legal research, drafting comprehensive reports, and collaborating with global institutions. Passionate about contributing to justice and legal reform through evidence-based policy recommendations and fieldwork. Known for strong writing skills, attention to detail, and a deep understanding of geopolitical legal issues.",
       education: [
         {
           school: "University of Cambridge",
@@ -206,16 +234,24 @@ export const templates = [
           role: "Research Associate",
           company: "UNESCO",
           duration: "2017 - 2022",
-          description: "Conducted field research and legal analysis for policy briefs.",
+          description: ["Conducted field research and legal analysis for policy briefs."],
         },
         {
           role: "Legal Fellow",
           company: "World Bank",
           duration: "2016 - 2017",
-          description: "Supported legislative reviews for East African regional policy.",
+          description: ["Supported legislative reviews for East African regional policy."],
         },
       ],
       skills: ["Legal Writing", "Policy Analysis", "Research", "Editing"],
+      certifications: [
+        {
+          title: "International Law Certification",
+          institution: "The Hague Academy of International Law",
+          year: "2015",
+        },
+      ],
+      publications: ["Global Governance and Legal Systems (Cambridge Press, 2021)"],
       languages: ["English", "French"],
     },
   },
@@ -230,7 +266,9 @@ export const templates = [
       phone: "+1 510-555-0199",
       email: "lina.park@web.berkeley.io",
       address: "215 Creative Blvd, Berkeley, CA 94720, USA",
-      summary: "Freelancer passionate about performance, minimal design, and web accessibility.",
+      linkedin: "https://www.linkedin.com/in/linaparkdev",
+      image: "/profile.png",
+      summary: "Creative and detail-oriented freelance web developer with a passion for modern web performance, clean UI design, and accessibility. Experienced in building responsive, mobile-first websites using cutting-edge front-end technologies and deployment platforms. Skilled in client communication, version control, and optimizing digital experiences for diverse audiences. Driven by a desire to combine minimalism with functional design that delivers results.",
       education: [
         {
           school: "UC Berkeley",
@@ -243,17 +281,25 @@ export const templates = [
           role: "Freelancer",
           company: "Self-employed",
           duration: "2018 - Present",
-          description: "Built custom websites for clients in fashion and retail sectors.",
+          description: ["Built custom websites for clients in fashion and retail sectors."],
         },
         {
           role: "Frontend Developer (Contract)",
           company: "Nike",
           duration: "2020 - 2021",
-          description: "Improved Lighthouse scores and mobile responsiveness.",
+          description: ["Improved Lighthouse scores and mobile responsiveness."],
         },
       ],
       skills: ["Vue", "Tailwind CSS", "Netlify", "Lighthouse", "Accessibility"],
+      certifications: [
+        {
+          title: "Frontend Web Developer Nanodegree",
+          institution: "Udacity",
+          year: "2019",
+        },
+      ],
       projects: ["E-commerce Site for Boutique", "PWA Portfolio Site"],
+      languages: ["English", "Korean"],
     },
   },
-]
+];
