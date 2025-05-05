@@ -109,11 +109,13 @@ export default function ResumePreview({ data }: { data: any }) {
           <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide">
             Skills
           </div>
-          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2">
+       
+          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2 place-items-center">
             {data.skills.map((skill: string, idx: number) => (
               <li key={idx} className="text-gray-800">{skill}</li>
             ))}
           </ul>
+         
         </div>
       </div>
 

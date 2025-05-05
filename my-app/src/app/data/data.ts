@@ -1,4 +1,4 @@
-import Imaagee from '../../../public/profile.png'
+
 export const templates = [
 
   {
@@ -13,7 +13,7 @@ export const templates = [
   email: "john.harvard@example.com",
   address: "123 Massachusetts Ave, Cambridge, MA",
   linkedin: "https://www.linkedin.com/in/mark-justin-borja", 
-  imaagee:  "profile.png",
+  image:  "/profile.png",
   summary: "Experienced software engineer with a strong background in academic research and system architecture. Skilled in developing robust and scalable applications across a variety of platforms, with expertise in modern web technologies, API design, and database management. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Passionate about optimizing performance, maintaining clean code, and implementing innovative technical solutions to solve complex problems.",
   education: [
     {
@@ -37,7 +37,8 @@ export const templates = [
         "Integrated authentication using AWS Cognito and implemented detailed logging with CloudWatch.",
         "Collaborated closely with senior engineers in Agile sprints, gaining hands-on experience with CI/CD pipelines and real-world production deployments."
       ]
-    }
+    },
+ 
   ],
   skills: ["Node.js", "PostgreSQL", "GraphQL", "Docker", "Kubernetes"],
   certifications: [
