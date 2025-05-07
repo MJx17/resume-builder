@@ -10,8 +10,8 @@ const COLORS = [
   { id: "gray", color: "bg-gray-500" },
   { id: "navy", color: "bg-blue-900" }, // A darker shade of blue for a formal look
   { id: "darkGray", color: "bg-gray-800" }, // Darker gray for professionalism
-  { id: "charcoal", color: "bg-gray-700" }, // A charcoal gray for a more subdued look
-  { id: "silver", color: "bg-silver-500" }, // Subtle silver tone
+ 
+
 ];
 
 

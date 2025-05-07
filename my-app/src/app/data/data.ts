@@ -92,7 +92,7 @@ export const templates = [
           description: ["Helped redesign parts of the Illustrator interface for accessibility."],
         },
       ],
-      skills: ["Figma", "UX Research", "Prototyping", "HTML/CSS", "Adobe XD"],
+      skills: ["Figma", "UX Research", "Prototyping", "HTML/CSS", "Adobe XD", "React"],
       certifications: [
         {
           title: "Google UX Design Certificate",

@@ -13,7 +13,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Header */}
       <div className="text-center text-blue-500">
-        <h1 style={{ color: color }} className="text-3xl font-bold">{data.name}</h1>
+        <h1 style={{ color: color }} className="text-xl font-bold">{data.name}</h1>
         <p style={{ color: color }} className="text-sm text-gray-600">{data.title}</p>
       </div>
       <section
@@ -21,6 +21,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
         className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
         style={{ borderColor: color }}
       >
+        
         <h2
           className="text-sm font-bold tracking-wider mb-1"
           style={{ color: color }}

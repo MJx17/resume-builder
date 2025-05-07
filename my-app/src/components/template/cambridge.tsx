@@ -22,7 +22,7 @@ export default function ModernResume({ data, color }: { data: any, color: string
 
         <div className="mb-6 border-b-1 border-[#0a0a0a] grid grid-cols-[20%_80%] items-start pb-3">
           {/* Left: Profile Picture */}
-          <div className="flex justify-center items-start my-auto">
+          <div className="flex justify-center items-start my-auto mr-5">
             {data.image && (
               <Image
                 src={data.image}

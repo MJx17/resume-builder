@@ -110,7 +110,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
             Skills
           </div>
        
-          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2 place-items-center">
+          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2 ">
             {data.skills.map((skill: string, idx: number) => (
               <li key={idx} className="text-gray-800">{skill}</li>
             ))}
