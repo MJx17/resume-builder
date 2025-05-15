@@ -17,20 +17,13 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
             {data.phone && <div>{data.phone}</div>}
             {data.email && <div>{data.email}</div>}
             {data.linkedin && (
-              <div>
                 <Link
-                  href={
-                    data.linkedin.startsWith("http")
-                      ? data.linkedin
-                      : `https://${data.linkedin}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  {data.linkedin}
-                </Link>
-              </div>
+                href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
+                target="_blank"
+                className="text-blue-600 underline"
+              >
+                LinkedIn
+              </Link>
             )}
           </div>
 

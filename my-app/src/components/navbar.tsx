@@ -9,12 +9,13 @@ import {
   NavigationMenuList,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu"
+import { ModeToggle } from "./theme-button"
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+    <nav className="shadow-md px-6 py-4 flex justify-between items-center">
       <div className="text-2xl font-bold text-gray-800">ResumeBuilder</div>
 
       {/* Desktop Navigation */}
@@ -48,6 +49,11 @@ const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
+
+
+
+        <ModeToggle />
+   
 
       {/* Contact Us Link */}
       <Link
@@ -105,6 +111,7 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
+
         </div>
       )}
     </nav>

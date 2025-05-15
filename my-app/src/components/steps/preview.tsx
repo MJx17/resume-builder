@@ -1,23 +1,29 @@
-import React from "react";
-import { Button, } from "@components/ui/button"; // Import ShadCN button component
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import ModernResume from "@components/template/berkeley";
+import { useResumeStore } from "@/store/personal"; // adjust path if needed
 
-const ResumePreview: React.FC<{ onNext: () => void }> = ({ onNext }) => {
+const PrintComponent = () => {
+  const formData = useResumeStore((state) => state.formData);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const reactToPrintFn = useReactToPrint({
+    content: () => contentRef.current,
+    documentTitle: "Resume",
+    pageStyle: "@page { size: A4; margin: 20mm; }",
+  });
+
   return (
-    <div className="text-center">
+    <div>
+      <button onClick={reactToPrintFn} className="btn btn-primary">
+        Print Resume
+      </button>
 
-      <div className="bg-white p-6 border rounded-lg shadow-lg">
-        <h3 className="text-xl font-semibold mb-4">Your Resume</h3>
-        <div className="text-left">
-          <p className="mb-2"><strong>Name:</strong> John Doe</p>
-          <p className="mb-2"><strong>Email:</strong> john.doe@example.com</p>
-          <p className="mb-2"><strong>Phone:</strong> +123 456 7890</p>
-        </div>
+      <div ref={contentRef}>
+        <ModernResume data={formData} color="#1E40AF" />
       </div>
-      <Button onClick={onNext} className="mt-6 bg-blue-500 hover:bg-blue-600 text-white">
-        Next
-      </Button>
     </div>
   );
 };
 
-export default ResumePreview;
+export default PrintComponent;

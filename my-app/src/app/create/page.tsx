@@ -32,7 +32,7 @@ const CreateResumePage: React.FC = () => {
       case 1:
         return <SelectLayout onNext={goToNextStep} />;
       case 2:
-        return <PersonalDetailsForm onNext={goToNextStep} />;
+        return <PersonalDetailsForm onNext={goToNextStep} onBack={goToPreviousStep} />;
       case 3:
         return <ResumePreview onNext={goToNextStep}/>;
       case 4:

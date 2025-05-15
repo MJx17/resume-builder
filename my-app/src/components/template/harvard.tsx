@@ -11,26 +11,35 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* Header */}
       <div className="pb-2 mb-4">
         <div className="border-b border-[#444] mb-2">
-          <div className="text-[16px] font-bold text-black mb-1 text-center "  style={{color}}>{data.name}</div>
+          <div className="text-[16px] font-bold text-black mb-1 text-center " style={{ color }}>{data.name}</div>
         </div>
         <div>
-          <div className="text-[9px] text-gray-600 mb-1 text-center">
-            {data.address} • {data.phone} • {data.email} •{" "}
-            {data.linkedin && (
-              <Link
-                href={
-                  data.linkedin.startsWith("http")
-                    ? data.linkedin
-                    : `https://${data.linkedin}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                {data.linkedin}
-              </Link>
-            )}
+          <div>
+            <ul className="text-[9px] text-gray-600 mb-1 text-center flex flex-wrap justify-center gap-2 p-0 m-0 list-none">
+              {data.address && (
+                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.address}</li>
+              )}
+              {data.phone && (
+                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.phone}</li>
+              )}
+              {data.email && (
+                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.email}</li>
+              )}
+             {data.linkedin && (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    LinkedIn
+                  </Link>
+                </div>
+              )}
+            </ul>
           </div>
+
 
         </div>
       </div>
@@ -38,7 +47,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* Summary */}
       {data.summary && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center"  style={{color}}>
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             Summary
           </div>
           <div className="text-[11px] text-gray-600 font-normal text-justify">
@@ -49,7 +58,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Education */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Education
         </div>
         {data.education.map((edu: any, idx: number) => (
@@ -65,7 +74,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Experience */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Experience
         </div>
         {data.experience.map((exp: any, idx: number) => (
@@ -94,7 +103,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Skills */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Skills
         </div>
         <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2">
@@ -107,7 +116,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* Certifications */}
       {data.certifications && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             Certifications
           </div>
           {data.certifications.map((cert: any, idx: number) => (
@@ -125,7 +134,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* References */}
       {data.references ? (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             References
           </div>
           {data.references.map((ref: any, idx: number) => (
@@ -142,7 +151,7 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
         </div>
       ) : (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{color}}>
+          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             References
           </div>
           <div className="text-[11px] text-gray-600 font-normal text-center">
