@@ -2,7 +2,7 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import clsx from "clsx"; // if not using clsx, use plain string templates
 
-const COLORS = [
+ export const COLORS = [
   { id: "red", color: "bg-red-500" },
   { id: "blue", color: "bg-blue-500" },
   { id: "green", color: "bg-green-500" },

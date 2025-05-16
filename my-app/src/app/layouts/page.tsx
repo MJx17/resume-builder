@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import ColorPicker from "@/components/color-picker";
 
-export default function ResumeTemplateSelector() {
+ function ResumeTemplateSelector() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
   const [color, setColor] = useState("red"); // Default color
@@ -36,7 +36,7 @@ export default function ResumeTemplateSelector() {
     setSelectedTemplate(null);
   };
 
-  const renderTemplate = () => {
+ const renderTemplate = () => {
     if (!selectedTemplate) return null;
 
     const props = {
@@ -111,3 +111,5 @@ export default function ResumeTemplateSelector() {
     </div>
   );
 }
+
+export default  ResumeTemplateSelector;

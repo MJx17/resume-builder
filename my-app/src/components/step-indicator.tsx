@@ -12,38 +12,31 @@ export interface StepIndicatorProps {
   totalSteps: number;
   onNext: () => void;
   onBack: () => void;
+  isNextDisabled?: boolean; // NEW PROP
 }
 
-const steps = [
-  "Select Layout",
-  "Fill in Details",
-  "Preview",
-  "Download",
-];
+const steps = ["Select Layout", "Fill in Details", "Preview", "Download"];
 
 const StepIndicator: React.FC<StepIndicatorProps> = ({
   currentStep,
   onNext,
   onBack,
   totalSteps,
+  isNextDisabled = false, // default to false
 }) => {
-  const stepCount = steps.length;
   const containerRef = useRef<HTMLDivElement>(null);
   const [progressWidth, setProgressWidth] = useState(0);
 
-  useEffect(() => {
-    if (containerRef.current) {
-      // The total width available for the progress line (from left to right marginrounded-lg)
-      const totalWidth = containerRef.current.offsetWidth;
 
-      // Calculate pixel width for progress line:
-      // subtract 5rem (80px) for margins (2.5rem left + 2.5rem right)
-      const availableWidth = totalWidth - 80; 
+ useEffect(() => {
+  if (containerRef.current) {
+    const totalWidth = containerRef.current.offsetWidth;
+    const availableWidth = totalWidth - 80;
+    const width = ((currentStep - 1) / (steps.length - 1)) * availableWidth;
+    setProgressWidth(width);
+  }
+}, [currentStep]);
 
-      const width = ((currentStep - 1) / (stepCount - 1)) * availableWidth;
-      setProgressWidth(width);
-    }
-  }, [currentStep, stepCount]);
 
   return (
     <Card className="mb-8 rounded-md">
@@ -52,43 +45,33 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
       </CardHeader>
 
       <CardContent>
-        {/* Stepper container */}
+        {/* Step progress bar */}
         <div className="relative w-full px-4" ref={containerRef}>
-          {/* Progress line background */}
           <div className="absolute top-5 left-10 right-10 h-1 bg-gray-300 rounded"></div>
-
-          {/* Colored progress line */}
           <div
             className="absolute top-5 h-1 bg-blue-500 rounded transition-all duration-800"
             style={{
-              left: "2.5rem", // center of first circle
+              left: "2.5rem",
               width: `${progressWidth}px`,
             }}
           ></div>
 
           {/* Steps */}
-          <div
-            className="relative flex justify-between"
-            style={{ userSelect: "none" }}
-          >
+          <div className="relative flex justify-between select-none">
             {steps.map((step, index) => {
               const stepNumber = index + 1;
               const isCompleted = stepNumber < currentStep;
               const isCurrent = stepNumber === currentStep;
 
               return (
-                <div
-                  key={index}
-                  className="flex flex-col items-center"
-                  style={{ width: "5rem" }}
-                >
+                <div key={index} className="flex flex-col items-center w-20">
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold
                       ${isCompleted
                         ? "bg-green-500 text-white"
                         : isCurrent
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300 text-gray-700"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300 text-gray-700"
                       }`}
                   >
                     {stepNumber}
@@ -100,8 +83,25 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
           </div>
         </div>
 
-        {/* Navigation Buttons */}
-  
+        {/* Navigation buttons */}
+        <div className="mt-6 flex justify-between">
+          <Button
+            onClick={onBack}
+            className="bg-gray-200 hover:bg-gray-300 text-black"
+          >
+            Prev
+          </Button>
+          <Button
+            onClick={onNext}
+            disabled={isNextDisabled}
+            className={`text-white ${isNextDisabled
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+              }`}
+          >
+            Next
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
