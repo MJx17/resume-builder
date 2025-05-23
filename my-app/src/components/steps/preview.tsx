@@ -22,6 +22,7 @@ import Stanford from "@/components/template/stanford";
 import Cambridge from "@/components/template/cambridge";
 import MIT from "@/components/template/mit";
 import Berkley from "@/components/template/berkeley";
+import { PDFViewer } from "@react-pdf/renderer";
 
 // Template map
 const templates = [
@@ -39,16 +40,19 @@ const Preview: React.FC = () => {
   const color = useLayoutStore((state) => state.color);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const selected = templates.find((t) => t.id === layout);
-
   const handleOpenModal = () => {
     if (selected) setIsModalOpen(true);
   };
-
+  
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+
+
+  const selected = templates.find((t) => t.id === layout);
+
+
 
   const renderTemplate = () => {
     if (!selected) return <div className="text-gray-500 italic">No template selected.</div>;
@@ -68,6 +72,8 @@ const Preview: React.FC = () => {
   }
 
   return (
+
+
     <div className=" p-6 flex items-center justify-center">
       <Card className="max-w-md w-full flex flex-col justify-between">
         <CardHeader>
@@ -99,3 +105,5 @@ const Preview: React.FC = () => {
 };
 
 export default Preview;
+
+

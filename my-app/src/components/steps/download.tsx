@@ -1,6 +1,7 @@
 import React from "react";
 import { PDFDownloadLink,  PDFViewer } from "@react-pdf/renderer";
 import BerkeleyPDF from "@components/pdf/berkeley";
+import  Cambridge  from "@components/pdf/cambridge";
 import { useResumeStore } from "@/store/personal";
 import { Button } from "@components/ui/button";
 import DummyPDF from "../pdf/dummpdf";
@@ -13,7 +14,7 @@ const DownloadResume: React.FC = () => {
     <div>
     <div className="text-center">
       <PDFDownloadLink
-        document={<BerkeleyPDF data={formData} color={themeColor} />}
+        document={<Cambridge data={formData} color={themeColor} />}
         fileName="Resume.pdf"
       >
         {({ loading }) => (
@@ -25,7 +26,7 @@ const DownloadResume: React.FC = () => {
     </div>
 
  
-      <PDFViewer width="100%" height="600">
+      <PDFViewer width="100%" height="800">
     <DummyPDF />
   </PDFViewer>
     </div>
