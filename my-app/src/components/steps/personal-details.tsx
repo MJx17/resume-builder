@@ -10,12 +10,19 @@ import {
   AccordionContent,
 } from "@components/ui/accordion";
 import { MdEdit } from "react-icons/md";
-import { useResumeStore } from "@/store/personal";
+import { useResumeStore, FormDataType, Education, Experience, Certification } from "@/store/personal";
 
 const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBack }) => {
   const { formData, setFormData } = useResumeStore();
-  const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+
+  // Draft states per nested section
+  const [draftEducation, setDraftEducation] = useState<Record<number, Education>>({});
+  const [draftExperience, setDraftExperience] = useState<Experience>({ role: "", company: "", duration: "", description: [""] });
+  const [draftCertification, setDraftCertification] = useState<Certification>({ title: "", institution: "", year: "" });
+
+  // Track which section/index is being edited
+  const [editing, setEditing] = useState<{ section: keyof FormDataType | null; index: number | null }>({ section: null, index: null });
 
   useEffect(() => {
     return () => {
@@ -24,18 +31,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
   }, [imagePreview]);
 
   const handleChange = (field: string, value: any) => {
-    setFormData({ [field]: value }); // update Zustand
-  };
-
-  const handleNestedChange = (
-    section: keyof typeof formData,
-    index: number,
-    key: string,
-    value: string | string[]
-  ) => {
-    const updated = [...(formData[section] as any)];
-    updated[index][key] = value;
-    handleChange(section, updated);
+    setFormData({ [field]: value });
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +42,20 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
       setImagePreview(previewURL);
       handleChange("image", file);
     }
+  };
+
+  const handleNestedChange = (
+    section: keyof typeof formData,
+    index: number,
+    key: string,
+    value: string | string[]
+  ) => {
+    const updated = [...(formData[section] as any)];
+    updated[index][key] = value;
+    setFormData((prev) => ({
+      ...prev,
+      [section]: updated,
+    }));
   };
 
   const addItem = (section: keyof typeof formData, defaultItem: any) => {
@@ -61,9 +71,82 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
     }
   };
 
+  const startEditing = (section: keyof FormDataType, index: number) => {
+    setEditing({ section, index });
+    const item = (formData[section] as any)[index];
+    switch (section) {
+      case "education":
+        setDraftEducation((prev) => ({
+          ...prev,
+          [index]: item,
+        }));
+        break;
+      case "experience":
+        setDraftExperience(item);
+        break;
+      case "certifications":
+        setDraftCertification(item);
+        break;
+    }
+  };
+
+
+  const saveItem = (section: keyof FormDataType, index: number, draft?: any) => {
+    const updated = [...(formData[section] as any)];
+
+    if (section === "education" && draftEducation[index]) {
+      updated[index] = draftEducation[index];
+    } else if (section === "experience") {
+      updated[index] = draftExperience;
+    } else if (section === "certifications") {
+      updated[index] = draftCertification;
+    }
+
+    setFormData({ ...formData, [section]: updated });
+
+    if (section === "education") {
+      setDraftEducation((prev) => {
+        const newDraft = { ...prev };
+        delete newDraft[index];
+        return newDraft;
+      });
+    }
+
+    cancelEdit();
+  };
+
+  const cancelEdit = () => {
+    if (editing.section === "education" && editing.index !== null) {
+      setDraftEducation((prev) => {
+        const newDraft = { ...prev };
+        delete newDraft[editing.index!];
+        return newDraft;
+      });
+    }
+
+    setEditing({ section: null, index: null });
+  };
+
+
+
+  const handleDraftChange = (section: keyof FormDataType, key: string, value: any) => {
+    switch (section) {
+      case "education":
+        setDraftEducation((prev) => ({ ...prev, [key]: value }));
+        break;
+      case "experience":
+        setDraftExperience((prev) => ({ ...prev, [key]: value }));
+        break;
+      case "certifications":
+        setDraftCertification((prev) => ({ ...prev, [key]: value }));
+        break;
+    }
+  };
+
   const isValid = formData.name.trim() !== "" && formData.email.trim() !== "";
 
-  // ...render inputs based on formData
+  // Continue rendering UI as normal...
+
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -165,74 +248,96 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
 
 
         {/* Education */}
-        <AccordionItem value="education" className="border rounded  relative shadow-sm bg-white rounded-md my-2">
+        {/* Education */}
+        <AccordionItem
+          value="education"
+          className="border rounded relative shadow-sm bg-white rounded-md my-2"
+        >
           <AccordionTrigger className="p-4 cursor-pointer">
             <div className="flex flex-col w-full">
               <h3 className="font-semibold text-lg">Education</h3>
-              <p className="text-sm text-gray-500">
-                Fill Educational Attainments.
-              </p>
+              <p className="text-sm text-gray-500">Fill Educational Attainments.</p>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="space-y-4 p-6">
-            {/** 
-     * If formData.education is empty, render a default editable block; 
-     * otherwise, render all education items.
-     **/}
-            {(formData.education.length === 0
-              ? [{ school: "", degree: "", year: "" }]
-              : formData.education
-            ).map((edu, index) => {
-              // Determine whether this block should be in 'editing' mode.
-              // For the default block (when education is empty), we always show inputs.
-              const isFirstDefault = formData.education.length === 0 && index === 0;
-              const isEditing = isFirstDefault || editingIndex === index;
+          <AccordionContent className="p-6">
+            {formData.education.map((edu, index) => {
+              const isNew = !edu.school && !edu.degree && !edu.year;
+              const isEditing = (editing.section === "education" && editing.index === index) || isNew;
+              const draft = draftEducation[index] || { school: "", degree: "", year: "" };
+
 
               return (
-                <div
-                  key={index}
-                  className=""
-                >
-                  <div className="flex justify-between items-center mb-2 border-b pb-2">
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={`${edu.school} `}
-                        readOnly
-                        className="w-full bg-transparent border-none font-semibold text-lg"
-                      />
-                    ) : (
-                      <h3 className="font-semibold text-lg">
-                        {`${edu.school}`}
-                      </h3>
-                    )}
+                <Accordion type="single" collapsible key={index}>
+                  <AccordionItem value={`edu-${index}`}>
+                    <AccordionTrigger>
+                      {isEditing ? "Education" : edu.school || `Education #${index + 1}`}
+                    </AccordionTrigger>
 
-                    {/** 
-             * Show Edit/Delete buttons only if there is real education data.
-             * For the initial default block (when there’s no education data), we don't show these controls.
-             **/}
-                    {formData.education.length > 0 && (
-                      <div className="flex space-x-2">
-                        {isEditing ? (
-                          <>
+                    <AccordionContent>
+                      {isEditing ? (
+                        <>
+                          <Input
+                            placeholder="School"
+                            value={draft.school}
+                            onChange={(e) =>
+                              setDraftEducation((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, school: e.target.value },
+                              }))
+                            }
+                            className="mb-2"
+                          />
+                          <Input
+                            placeholder="Degree"
+                            value={draft.degree}
+                            onChange={(e) =>
+                              setDraftEducation((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, degree: e.target.value },
+                              }))
+                            }
+                            className="mb-2"
+                          />
+                          <Input
+                            placeholder="Year"
+                            value={draft.year}
+                            onChange={(e) =>
+                              setDraftEducation((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, year: e.target.value },
+                              }))
+                            }
+                          />
+                          <div className="flex justify-end mt-2 space-x-2">
                             <button
                               className="text-green-600 hover:underline"
-                              onClick={() => setEditingIndex(null)}
+                              onClick={() => saveItem("education", index)}
                             >
                               Save
                             </button>
                             <button
                               className="text-gray-600 hover:underline"
-                              onClick={() => setEditingIndex(null)}
+                              onClick={cancelEdit}
                             >
                               Cancel
                             </button>
-                          </>
-                        ) : (
-                          <>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p><strong>School:</strong> {edu.school}</p>
+                          <p><strong>Degree:</strong> {edu.degree}</p>
+                          <p><strong>Year:</strong> {edu.year}</p>
+                          <div className="flex justify-end mt-2 space-x-2">
                             <button
                               className="text-blue-600 hover:underline"
-                              onClick={() => setEditingIndex(index)}
+                              onClick={() => {
+                                setDraftEducation((prev) => ({
+                                  ...prev,
+                                  [index]: edu,
+                                }));
+                                startEditing("education", index);
+                              }}
                             >
                               Edit
                             </button>
@@ -242,93 +347,44 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
                             >
                               Delete
                             </button>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/** 
-           * If in editing mode, show input fields; otherwise, show text display.
-           * For the default empty block, inputs are always shown.
-           **/}
-                  {isEditing ? (
-                    <div className="space-y-2">
-                      <Input
-                        placeholder="School"
-                        value={edu.school}
-                        onChange={(e) =>
-                          handleNestedChange("education", index, "school", e.target.value)
-                        }
-                      />
-                      <Input
-                        placeholder="Degree"
-                        value={edu.degree}
-                        onChange={(e) =>
-                          handleNestedChange("education", index, "degree", e.target.value)
-                        }
-                      />
-                      <Input
-                        placeholder="Year"
-                        value={edu.year}
-                        onChange={(e) =>
-                          handleNestedChange("education", index, "year", e.target.value)
-                        }
-                      />
-
-                      {/** For the default block (when no data exists), show a Save button instead of Edit/Delete controls */}
-                      {isFirstDefault && (
-                        <div className="flex justify-end mt-2">
-                          <Button
-                            onClick={() => {
-                              // Validate: at least one of the fields must be filled.
-                              if (edu.school || edu.degree || edu.year) {
-                                // Add to state
-                                addItem("education", edu);
-                              } else {
-                                alert("Please fill in at least one field.");
-                              }
-                            }}
-                          >
-                            Save Education
-                          </Button>
-                        </div>
+                          </div>
+                        </>
                       )}
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      <p>
-                        <strong>School:</strong> {edu.school}
-                      </p>
-                      <p>
-                        <strong>Degree:</strong> {edu.degree}
-                      </p>
-                      <p>
-                        <strong>Year:</strong> {edu.year}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               );
             })}
 
-            {/** 
-     * If there is already education data (and we're not in the "no data" default state),
-     * show a button to add additional education entries.
-     **/}
-            {formData.education.length > 0 && (
-              <Button
-                onClick={() => {
-                  addItem("education", { school: "", degree: "", year: "" });
-                  setEditingIndex(formData.education.length);
-                }}
-                className="mt-4"
-              >
-                + Add Education
-              </Button>
-            )}
+            <Button
+              onClick={() => {
+                const newIndex = formData.education.length;
+                const newItem = { school: "", degree: "", year: "" };
+
+                addItem("education", newItem);
+
+                setDraftEducation({
+                  ...draftEducation,
+                  [newIndex]: { school: "", degree: "", year: "" },
+                });
+
+
+                setEditing({ section: "education", index: newIndex });
+              }}
+              className="mt-4"
+            >
+              + Add Education
+            </Button>
           </AccordionContent>
+
+
+
+
+
+
+
         </AccordionItem>
+
 
 
 
@@ -342,140 +398,19 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
         <AccordionItem value="experience" className="space-y-4 border rounded  relative shadow-sm bg-white">
           <AccordionTrigger className="p-4 cursor-pointer">
             <div className="flex flex-col w-full">
-              <h3 className="font-semibold text-lg">Education</h3>
+              <h3 className="font-semibold text-lg">Experience</h3>
               <p className="text-sm text-gray-500">
                 Fill Educational Attainments.
               </p>
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-6">
-            {(formData.experience.length === 0
-              ? [{ role: "", company: "", duration: "", description: [""] }]
-              : formData.experience
-            ).map((exp, index) => {
-              const isFirstDefault = formData.experience.length === 0 && index === 0;
-              const isEditing = editingIndex === index || isFirstDefault;
+            {/* {formData.experience
 
-              return (
-                <div
-                  key={index}
-                  className=""
-                >
-                  <div className="flex justify-between items-center mb-2 border-b pb-2">
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={` ${exp.company} `}
-                        readOnly
-                        className="w-full bg-transparent border-none font-semibold text-lg"
-                      />
-                    ) : (
-                      <h3 className="font-semibold text-lg">
-                        {` ${exp.company}`}
-                      </h3>
-                    )}
+            } */}
 
-                    {formData.experience.length > 0 && (
-                      <div className="flex space-x-2">
-                        {isEditing ? (
-                          <>
-                            <button
-                              className="text-green-600 hover:underline"
-                              onClick={() => setEditingIndex(null)}
-                            >
-                              Save
-                            </button>
-                            <button
-                              className="text-gray-600 hover:underline"
-                              onClick={() => setEditingIndex(null)}
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              className="text-blue-600 hover:underline"
-                              onClick={() => setEditingIndex(index)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="text-red-600 hover:underline"
-                              onClick={() => removeItem("experience", index)}
-                            >
-                              Delete
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {isEditing && (
-                    <div className="space-y-2">
-                      <Input
-                        placeholder="Role"
-                        value={exp.role}
-                        onChange={(e) =>
-                          handleNestedChange("experience", index, "role", e.target.value)
-                        }
-                      />
-                      <Input
-                        placeholder="Company"
-                        value={exp.company}
-                        onChange={(e) =>
-                          handleNestedChange("experience", index, "company", e.target.value)
-                        }
-                      />
-                      <Input
-                        placeholder="Duration"
-                        value={exp.duration}
-                        onChange={(e) =>
-                          handleNestedChange("experience", index, "duration", e.target.value)
-                        }
-                      />
-                      <Textarea
-                        placeholder="Description"
-                        value={exp.description.join("\n")}
-                        onChange={(e) =>
-                          handleNestedChange(
-                            "experience",
-                            index,
-                            "description",
-                            e.target.value.split("\n")
-                          )
-                        }
-                        className="min-h-[100px]"
-                      />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-
-            <Button
-              onClick={() => {
-                if (formData.experience.length === 0) {
-                  setFormData((prev) => ({
-                    ...prev,
-                    experience: [{ role: "", company: "", duration: "", description: [""] }],
-                  }));
-                } else {
-                  addItem("experience", {
-                    role: "",
-                    company: "",
-                    duration: "",
-                    description: [""],
-                  });
-                  setEditingIndex(formData.experience.length);
-                }
-              }}
-              className="mt-4"
-            >
-              + Add Experience
-            </Button>
           </AccordionContent>
+
         </AccordionItem>
 
 

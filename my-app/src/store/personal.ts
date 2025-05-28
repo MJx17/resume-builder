@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-type Education = { school: string; degree: string; year: string };
-type Experience = { role: string; company: string; duration: string; description: string[] };
-type Certification = { title: string; institution: string; year: string };
+export type Education = { school: string; degree: string; year: string };
+export type Experience = { role: string; company: string; duration: string; description: string[] };
+export type Certification = { title: string; institution: string; year: string };
 
-type FormDataType = {
+export type FormDataType = {
   name: string;
   title: string;
   phone: string;
