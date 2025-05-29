@@ -16,13 +16,15 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
   const { formData, setFormData } = useResumeStore();
   const [imagePreview, setImagePreview] = useState<string>("");
 
-  // Draft states per nested section
   const [draftEducation, setDraftEducation] = useState<Record<number, Education>>({});
-  const [draftExperience, setDraftExperience] = useState<Experience>({ role: "", company: "", duration: "", description: [""] });
-  const [draftCertification, setDraftCertification] = useState<Certification>({ title: "", institution: "", year: "" });
+  const [draftExperience, setDraftExperience] = useState<Record<number, Experience>>({});
+  const [draftCertification, setDraftCertification] = useState<Record<number, Certification>>({});
 
-  // Track which section/index is being edited
-  const [editing, setEditing] = useState<{ section: keyof FormDataType | null; index: number | null }>({ section: null, index: null });
+
+  const [editing, setEditing] = useState<{ section: keyof FormDataType | null; index: number | null }>({
+    section: null,
+    index: null,
+  });
 
   useEffect(() => {
     return () => {
@@ -30,7 +32,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
     };
   }, [imagePreview]);
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof FormDataType, value: any) => {
     setFormData({ [field]: value });
   };
 
@@ -45,7 +47,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
   };
 
   const handleNestedChange = (
-    section: keyof typeof formData,
+    section: keyof FormDataType,
     index: number,
     key: string,
     value: string | string[]
@@ -58,12 +60,12 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
     }));
   };
 
-  const addItem = (section: keyof typeof formData, defaultItem: any) => {
+  const addItem = (section: keyof FormDataType, defaultItem: any) => {
     const updated = [...(formData[section] as any), defaultItem];
     handleChange(section, updated);
   };
 
-  const removeItem = (section: keyof typeof formData, index: number) => {
+  const removeItem = (section: keyof FormDataType, index: number) => {
     const updated = [...(formData[section] as any)];
     if (updated.length > 1) {
       updated.splice(index, 1);
@@ -76,69 +78,132 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
     const item = (formData[section] as any)[index];
     switch (section) {
       case "education":
-        setDraftEducation((prev) => ({
-          ...prev,
-          [index]: item,
-        }));
+        setDraftEducation((prev) => ({ ...prev, [index]: item }));
         break;
       case "experience":
-        setDraftExperience(item);
+        setDraftExperience((prev) => ({ ...prev, [index]: item }));
         break;
       case "certifications":
-        setDraftCertification(item);
+        setDraftCertification((prev) => ({ ...prev, [index]: item }));
         break;
     }
   };
+  const saveItem = (section: keyof FormDataType, index: number) => {
+    const updated = [...(formData[section] as any[])];
 
+    switch (section) {
+      case "education":
+        if (draftEducation[index]) {
+          updated[index] = draftEducation[index];
+          setDraftEducation((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[index];
+            return newDraft;
+          });
+        }
+        break;
 
-  const saveItem = (section: keyof FormDataType, index: number, draft?: any) => {
-    const updated = [...(formData[section] as any)];
-
-    if (section === "education" && draftEducation[index]) {
-      updated[index] = draftEducation[index];
-    } else if (section === "experience") {
-      updated[index] = draftExperience;
-    } else if (section === "certifications") {
-      updated[index] = draftCertification;
+      case "experience":
+        if (section === "experience" && draftExperience[index]) {
+          updated[index] = draftExperience[index];
+          setDraftExperience((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[index];
+            return newDraft;
+          });
+        }
+        break;
+      case "certifications":
+        if (section === "certifications" && draftCertification[index]) {
+          updated[index] = draftCertification[index];
+          setDraftCertification((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[index];
+            return newDraft;
+          });
+        }
+        break;
     }
 
-    setFormData({ ...formData, [section]: updated });
+    setFormData((prev) => ({
+      ...prev,
+      [section]: updated,
+    }));
 
-    if (section === "education") {
-      setDraftEducation((prev) => {
-        const newDraft = { ...prev };
-        delete newDraft[index];
-        return newDraft;
-      });
-    }
-
-    cancelEdit();
+    setEditing({ section: null, index: null });
   };
 
   const cancelEdit = () => {
-    if (editing.section === "education" && editing.index !== null) {
-      setDraftEducation((prev) => {
-        const newDraft = { ...prev };
-        delete newDraft[editing.index!];
-        return newDraft;
-      });
+    if (editing.index !== null && editing.section !== null) {
+      switch (editing.section) {
+        case "education":
+          setDraftEducation((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[editing.index!];
+            return newDraft;
+          });
+          break;
+        case "experience":
+          // Reset to default or remove changes
+          setDraftExperience((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[editing.index!];
+            return newDraft;
+          });
+          break;
+        case "certifications":
+          setDraftCertification((prev) => {
+            const newDraft = { ...prev };
+            delete newDraft[editing.index!];
+            return newDraft;
+          });
+          break;
+      }
     }
 
     setEditing({ section: null, index: null });
   };
 
+  const handleDraftChange = (
+    section: keyof FormDataType,
+    key: string,
+    value: any,
+    index?: number
+  ) => {
+    if (index === undefined) return;
 
-
-  const handleDraftChange = (section: keyof FormDataType, key: string, value: any) => {
     switch (section) {
       case "education":
-        setDraftEducation((prev) => ({ ...prev, [key]: value }));
+        setDraftEducation((prev) => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            [key]: value,
+          },
+        }));
         break;
+
       case "experience":
-        setDraftExperience((prev) => ({ ...prev, [key]: value }));
+        setDraftExperience((prev) => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            [key]: value,
+          },
+        }));
         break;
+
       case "certifications":
-        setDraftCertification((prev) => ({ ...prev, [key]: value }));
+        setDraftCertification((prev) => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            [key]: value,
+          },
+        }));
+        break;
+
+      default:
         break;
     }
   };
@@ -247,7 +312,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
         </AccordionItem>
 
 
-        {/* Education */}
+
         {/* Education */}
         <AccordionItem
           value="education"
@@ -376,13 +441,6 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
               + Add Education
             </Button>
           </AccordionContent>
-
-
-
-
-
-
-
         </AccordionItem>
 
 
@@ -395,21 +453,146 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
 
 
         {/* Experience */}
-        <AccordionItem value="experience" className="space-y-4 border rounded  relative shadow-sm bg-white">
+        <AccordionItem value="experience" className="space-y-4 border rounded  relative shadow-sm bg-white my-2">
           <AccordionTrigger className="p-4 cursor-pointer">
             <div className="flex flex-col w-full">
               <h3 className="font-semibold text-lg">Experience</h3>
               <p className="text-sm text-gray-500">
-                Fill Educational Attainments.
+                Fill Work Experience
               </p>
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-6">
-            {/* {formData.experience
+            {formData.experience.map((exp, index) => {
+              const isNew = !exp.company && !exp.role && !exp.duration && !exp.description;
+              const isEditing = (editing.section === "experience" && editing.index === index) || isNew;
+              const draft = draftExperience[index] || { company: "", role: "", duration: "", description: [] };
 
-            } */}
+
+              return (
+                <Accordion type="single" collapsible key={index}>
+                  <AccordionItem value={`exp-${index}`}>
+                    <AccordionTrigger>
+                      {isEditing ? "Experience" : exp.company || `Experience #${index + 1}`}
+                    </AccordionTrigger>
+
+                    <AccordionContent>
+                      {isEditing ? (
+                        <>
+                          <Input
+                            placeholder="Company"
+                            value={draft.company}
+                            onChange={(e) =>
+                              setDraftExperience((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, company: e.target.value },
+                              }))
+                            }
+                            className="mb-2"
+                          />
+                          <Input
+                            placeholder="Role"
+                            value={draft.role}
+                            onChange={(e) =>
+                              setDraftExperience((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, role: e.target.value },
+                              }))
+                            }
+                            className="mb-2"
+                          />
+                          <Input
+                            placeholder="Duration"
+                            value={draft.duration}
+                            onChange={(e) =>
+                              setDraftExperience((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, duration: e.target.value },
+                              }))
+                            }
+                          />
+                          <Input
+                            placeholder="Description"
+                            value={draft.description.join('\n')}  // join array into multiline string
+                            onChange={(e) =>
+                              setDraftExperience((prev) => ({
+                                ...prev,
+                                [index]: { ...draft, description: e.target.value.split('\n') }, // split back into array on newline
+                              }))
+                            }
+                          />
+
+                          <div className="flex justify-end mt-2 space-x-2">
+                            <button
+                              className="text-green-600 hover:underline"
+                              onClick={() => saveItem("experience", index)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="text-gray-600 hover:underline"
+                              onClick={cancelEdit}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p><strong>Company:</strong> {exp.company}</p>
+                          <p><strong>Role:</strong> {exp.role}</p>
+                          <p><strong>Duration:</strong> {exp.duration}</p>
+                          <p><strong>Description:</strong> {exp.description.join(", ")}</p>
+
+
+                          <div className="flex justify-end mt-2 space-x-2">
+                            <button
+                              className="text-blue-600 hover:underline"
+                              onClick={() => {
+                                setDraftExperience((prev) => ({
+                                  ...prev,
+                                  [index]: exp,
+                                }));
+                                startEditing("experience", index);
+                              }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="text-red-600 hover:underline"
+                              onClick={() => removeItem("experience", index)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              );
+            })}
+
+            <Button
+              onClick={() => {
+                const newIndex = formData.experience.length;
+                const newItem = { company: "", role: "", duration: "", description: [] };
+
+                addItem("experience", newItem);
+                setDraftExperience({
+                  ...draftExperience,
+                  [newIndex]: newItem,
+                });
+
+                setEditing({ section: "experience", index: newIndex });
+              }}
+              className="mt-4"
+            >
+              + Add Experience
+            </Button>
 
           </AccordionContent>
+
 
         </AccordionItem>
 
@@ -417,8 +600,15 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
 
 
         {/* Skills */}
-        <AccordionItem value="skills">
-          <AccordionTrigger>Skills</AccordionTrigger>
+        <AccordionItem value="Skiils" className="space-y-4 border rounded  relative shadow-sm bg-white my-2">
+          <AccordionTrigger className="p-4 cursor-pointer">
+            <div className="flex flex-col w-full">
+              <h3 className="font-semibold text-lg">Skiils</h3>
+              <p className="text-sm text-gray-500">
+                Skiils
+              </p>
+            </div>
+          </AccordionTrigger>
           <AccordionContent className="space-y-4">
             {formData.skills.map((skill, index) => (
               <div key={index} className="relative">
@@ -451,41 +641,100 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onBac
         </AccordionItem>
 
         {/* Certifications */}
-        <AccordionItem value="certifications">
-          <AccordionTrigger>Certifications</AccordionTrigger>
+        <AccordionItem value="Certifications" className="space-y-4 border rounded  relative shadow-sm bg-white">
+          <AccordionTrigger className="p-4 cursor-pointer">
+            <div className="flex flex-col w-full">
+              <h3 className="font-semibold text-lg">Certifications</h3>
+              <p className="text-sm text-gray-500">
+                Certificate
+              </p>
+            </div>
+          </AccordionTrigger>
           <AccordionContent className="space-y-4">
-            {formData.certifications.map((cert, index) => (
-              <div key={index} className="space-y-2 border p-2 rounded relative">
-                <Input
-                  placeholder="Title"
-                  value={cert.title}
-                  onChange={(e) => handleNestedChange("certifications", index, "title", e.target.value)}
-                />
-                <Input
-                  placeholder="Institution"
-                  value={cert.institution}
-                  onChange={(e) => handleNestedChange("certifications", index, "institution", e.target.value)}
-                />
-                <Input
-                  placeholder="Year"
-                  value={cert.year}
-                  onChange={(e) => handleNestedChange("certifications", index, "year", e.target.value)}
-                />
-                {formData.certifications.length > 1 && (
-                  <button
-                    type="button"
-                    className="absolute top-2 right-2 text-red-500"
-                    onClick={() => removeItem("certifications", index)}
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <Button onClick={() => addItem("certifications", { title: "", institution: "", year: "" })}>
+            {formData.certifications.map((cert, index) => {
+              const isNew = !cert.title && !cert.institution && !cert.year;
+              const isEditing = (editing.section === "certifications" && editing.index === index) || isNew;
+
+              return (
+                <div key={index} className="space-y-2 border p-2 rounded relative">
+                  {isEditing ? (
+                    <>
+                      <Input
+                        placeholder="Title"
+                        value={cert.title}
+                        onChange={(e) =>
+                          handleNestedChange("certifications", index, "title", e.target.value)
+                        }
+                      />
+                      <Input
+                        placeholder="Institution"
+                        value={cert.institution}
+                        onChange={(e) =>
+                          handleNestedChange("certifications", index, "institution", e.target.value)
+                        }
+                      />
+                      <Input
+                        placeholder="Year"
+                        value={cert.year}
+                        onChange={(e) =>
+                          handleNestedChange("certifications", index, "year", e.target.value)
+                        }
+                      />
+
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          className="text-green-600 hover:underline"
+                          onClick={() => setEditing({ section: "", index: null })}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="text-gray-600 hover:underline"
+                          onClick={() => {
+                            if (isNew) removeItem("certifications", index);
+                            else setEditing({ section: "", index: null });
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p><strong>Title:</strong> {cert.title}</p>
+                      <p><strong>Institution:</strong> {cert.institution}</p>
+                      <p><strong>Year:</strong> {cert.year}</p>
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          className="text-blue-600 hover:underline"
+                          onClick={() => setEditing({ section: "certifications", index })}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="text-red-600 hover:underline"
+                          onClick={() => removeItem("certifications", index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+
+            <Button
+              onClick={() => {
+                const newIndex = formData.certifications.length;
+                addItem("certifications", { title: "", institution: "", year: "" });
+                setEditing({ section: "certifications", index: newIndex });
+              }}
+            >
               + Add Certification
             </Button>
           </AccordionContent>
+
         </AccordionItem>
       </Accordion>
 

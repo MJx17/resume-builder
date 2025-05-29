@@ -135,7 +135,7 @@ export const templates = [
           role: "Data Analyst",
           company: "DeepMind",
           duration: "2018 - Present",
-          description: ["Built data pipelines and predictive models for healthcare research."],
+          description: ["Built data pipelines and predictive models for healthcare research.","Worked on predictive analytics model for public health interventions." ],
         },
         {
           role: "Research Assistant",
