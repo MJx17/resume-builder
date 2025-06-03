@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@components/ui/button";
 import {
   Carousel,
@@ -9,8 +10,11 @@ import {
 } from "@/components/ui/carousel";
 import { COLORS } from "@components/color-picker";
 import { useLayoutStore } from "@/store/layoutStore";
+import { useFormNavigationContext } from "@/context/formNavigationContext";
+  
 
-const SelectLayout: React.FC<{ onNext: () => void }> = ({ onNext }) => {
+
+const SelectLayout: React.FC = () => {
   const layouts = [
     {
       id: "harvard",
@@ -62,7 +66,7 @@ const SelectLayout: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     },
   ];
 
-  const [selectedLayout, setSelectedLayout] = useState<string | null>(null);
+   const [selectedLayout, setSelectedLayout] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const { setLayout, setColor } = useLayoutStore();
 
@@ -74,15 +78,15 @@ const SelectLayout: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     setSelectedColor(color);
   };
 
-  const handleNextClick = () => {
+  const { goToNextStep } = useFormNavigationContext();
+  // Automatically advance when both are selected
+  useEffect(() => {
     if (selectedLayout && selectedColor) {
       setLayout(selectedLayout);
       setColor(selectedColor);
-      onNext();
+      goToNextStep();
     }
-  };
-
-  const isNextDisabled = !selectedLayout?.length || !selectedColor?.length;
+  }, [selectedLayout, selectedColor, setLayout, setColor, goToNextStep]);
 
   return (
     <div className="text-center max-w-3xl mx-auto">
@@ -144,19 +148,6 @@ const SelectLayout: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-
-      {/* Next Button */}
-      <Button
-        onClick={handleNextClick}
-        disabled={isNextDisabled}
-        className={`mt-4 ${
-          isNextDisabled
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600 text-white"
-        }`}
-      >
-        Next
-      </Button>
     </div>
   );
 };

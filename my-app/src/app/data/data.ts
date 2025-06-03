@@ -50,8 +50,23 @@ export const templates = [
           year: "2021",
         },
       ],
+      references: [ // ✅ New field
+        {
+          name: "Dr. Emily Stone",
+          position: "Professor of Computer Science",
+          company: "Harvard University",
+          contact: "estone@harvard.edu / +1 (555) 987-6543",
+        },
+        {
+          name: "Sarah Kim",
+          position: "Engineering Manager",
+          company: "Meta",
+          contact: "s.kim@meta.com / +1 (555) 246-8100",
+        },
+      ],
     },
   },
+
   {
     id: "stanford",
     name: "Stanford",
@@ -102,6 +117,7 @@ export const templates = [
       ],
       projects: ["Accessibility-Focused Design System", "Onboarding Flow Redesign"],
       languages: ["English", "Spanish"],
+      
     },
   },
   {
@@ -135,7 +151,7 @@ export const templates = [
           role: "Data Analyst",
           company: "DeepMind",
           duration: "2018 - Present",
-          description: ["Built data pipelines and predictive models for healthcare research.","Worked on predictive analytics model for public health interventions." ],
+          description: ["Built data pipelines and predictive models for healthcare research.", "Worked on predictive analytics model for public health interventions."],
         },
         {
           role: "Research Assistant",

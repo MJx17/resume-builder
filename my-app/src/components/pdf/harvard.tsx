@@ -1,165 +1,196 @@
-"use client"
+// components/pdf/ResumePDF.tsx
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
+import { useLayoutStore } from "@/store/layoutStore";
 
-import Link from 'next/link';
+const styles = (themeColor: string) =>
+  StyleSheet.create({
+    page: {
+      padding: 72,
+      fontSize: 11,
+      fontFamily: "Helvetica",
+      color: "#000", // default text color
+    },
+    section: {
+      marginBottom: 12,
+    },
+    heading: {
+      fontSize: 13,
+      fontWeight: "bold",
+      color: themeColor,
+      marginBottom: 4,
+      textAlign: "center",
+      textTransform: "uppercase",
+    },
+    subheading: {
+      fontSize: 11,
+      fontWeight: "bold",
+      marginBottom: 2,
+    },
+    text: {
+      fontSize: 10,
+      marginBottom: 2,
+      textAlign: "justify",
+    },
+    smallText: {
+      fontSize: 9,
+      color: "gray",
+    },
+    listItem: {
+      marginLeft: 10,
+    },
+    line: {
+      marginVertical: 4,
+      borderBottomWidth: 1,
+      borderBottomColor: "#ccc",
+    },
+    center: {
+      textAlign: "center",
+    },
+  });
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
-  if (!data) return null
+const ResumePDF = ({ data }: { data: any }) => {
+  const themeColor = useLayoutStore((state) => state.color || "#000");
+  const s = styles(themeColor);
 
   return (
-    <div className="max-w-[700px] mx-auto p-5 bg-white text-[#222] text-sm font-sans ">
+    <Document>
+      <Page size="A4" style={s.page}>
+        {/* Header */}
+        <View style={s.section}>
+          <Text style={s.heading}>{data.name || "Full Name"}</Text>
+          <Text style={[s.smallText, s.center]}>
+            {[data.address, data.phone, data.email]
+              .filter(Boolean)
+              .join(" • ")}
+          </Text>
+          {data.linkedin && (
+            <Text style={[s.smallText, s.center]}>
+              <Link
+                src={
+                  data.linkedin.startsWith("http")
+                    ? data.linkedin
+                    : `https://${data.linkedin}`
+                }
+              >
+                LinkedIn
+              </Link>
+            </Text>
+          )}
+        </View>
 
-      {/* Header */}
-      <div className="pb-2 mb-4">
-        <div className="border-b border-[#444] mb-2">
-          <div className="text-[16px] font-bold text-black mb-1 text-center " style={{ color }}>{data.name}</div>
-        </div>
-        <div>
-          <div>
-            <ul className="text-[9px] text-gray-600 mb-1 text-center flex flex-wrap justify-center gap-2 p-0 m-0 list-none">
-              {data.address && (
-                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.address}</li>
-              )}
-              {data.phone && (
-                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.phone}</li>
-              )}
-              {data.email && (
-                <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.email}</li>
-              )}
-             {data.linkedin && (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    LinkedIn
-                  </Link>
-                </div>
-              )}
-            </ul>
-          </div>
+        {/* Summary */}
+        {data.summary && (
+          <View style={s.section}>
+            <Text style={s.heading}>Summary</Text>
+            <Text style={s.text}>{data.summary}</Text>
+          </View>
+        )}
 
+        {/* Education */}
+        {data.education?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Education</Text>
+            {data.education.map((edu: any, idx: number) => (
+              <View key={idx} style={{ marginBottom: 4 }}>
+                <Text style={s.subheading}>{edu.school}</Text>
+                <Text style={s.text}>
+                  {edu.degree} — {edu.year}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
 
-        </div>
-      </div>
-
-      {/* Summary */}
-      {data.summary && (
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-            Summary
-          </div>
-          <div className="text-[11px] text-gray-600 font-normal text-justify">
-            {data.summary}
-          </div>
-        </div>
-      )}
-
-      {/* Education */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-          Education
-        </div>
-        {data.education.map((edu: any, idx: number) => (
-          <div key={idx} className="mb-2">
-            <div className="font-bold text-[13px]">{edu.school}</div>
-            <div className="flex justify-between text-[11px] text-gray-600 font-normal">
-              <span>{edu.degree}</span>
-              <span>{edu.year}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Experience */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-          Experience
-        </div>
-        {data.experience.map((exp: any, idx: number) => (
-          <div key={idx} className="mb-2">
-            <div className="flex justify-between text-[13px] font-bold">
-              <span>{exp.role} at {exp.company}</span>
-              <span className="text-[11px] text-gray-600 font-normal">{exp.duration}</span>
-            </div>
-            <ul className="list-disc pl-5 text-[11px] mt-1 space-y-1">
-              {Array.isArray(exp.description)
-                ? exp.description.map((item: string, i: number) => (
-                  <li key={i}>{item.trim()}</li>
-                ))
-                : typeof exp.description === 'string'
-                  ? exp.description
-                    .split("•")
-                    .filter((item: string) => item.trim() !== "")
-                    .map((item: string, i: number) => (
-                      <li key={i}>{item.trim()}</li>
+        {/* Experience */}
+        {data.experience?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Experience</Text>
+            {data.experience.map((exp: any, idx: number) => (
+              <View key={idx} style={{ marginBottom: 4 }}>
+                <Text style={s.subheading}>
+                  {exp.role} at {exp.company}
+                </Text>
+                <Text style={s.smallText}>{exp.duration}</Text>
+                {Array.isArray(exp.description)
+                  ? exp.description.map((item: string, i: number) => (
+                      <Text key={i} style={s.text}>
+                        • {item.trim()}
+                      </Text>
                     ))
+                  : typeof exp.description === "string"
+                  ? exp.description
+                      .split("•")
+                      .filter((item :string) => item.trim() !== "")
+                      .map((item: string, i:number) => (
+                        <Text key={i} style={s.text}>
+                          • {item.trim()}
+                        </Text>
+                      ))
                   : null}
-            </ul>
-          </div>
-        ))}
-      </div>
+              </View>
+            ))}
+          </View>
+        )}
 
-      {/* Skills */}
-      <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-          Skills
-        </div>
-        <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2">
-          {data.skills.map((skill: string, idx: number) => (
-            <li key={idx} className="text-gray-800">{skill}</li>
-          ))}
-        </ul>
-      </div>
+        {/* Skills */}
+        {data.skills?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Skills</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {data.skills.map((skill: string, idx: number) => (
+                <Text key={idx} style={[s.text, { width: "33.33%" }]}>
+                  • {skill}
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
 
-      {/* Certifications */}
-      {data.certifications && (
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-            Certifications
-          </div>
-          {data.certifications.map((cert: any, idx: number) => (
-            <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{cert.title} </div>
-              <div className="text-[11px] text-gray-600 font-normal flex justify-between">
-                <span>{cert.institution}</span>
-                <span>{cert.year}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+        {/* Certifications */}
+        {data.certifications?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Certifications</Text>
+            {data.certifications.map((cert: any, idx: number) => (
+              <View key={idx}>
+                <Text style={s.subheading}>{cert.title}</Text>
+                <Text style={s.smallText}>
+                  {cert.institution} • {cert.year}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
 
-      {/* References */}
-      {data.references ? (
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-            References
-          </div>
-          {data.references.map((ref: any, idx: number) => (
-            <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{ref.name}</div>
-              <div className="text-[11px] text-gray-600 font-normal">
-                {ref.title} at {ref.company}
-              </div>
-              <div className="text-[11px] text-gray-600 font-normal">
-                {ref.contact}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
-            References
-          </div>
-          <div className="text-[11px] text-gray-600 font-normal text-center">
-            References available upon request
-          </div>
-        </div>
-      )}
+        {/* References */}
+        <View style={s.section}>
+          <Text style={s.heading}>References</Text>
+          {data.references?.length > 0 ? (
+            data.references.map((ref: any, idx: number) => (
+              <View key={idx}>
+                <Text style={s.subheading}>{ref.name}</Text>
+                <Text style={s.text}>
+                 {ref.company}
+                </Text>
+                <Text style={s.text}>{ref.contact}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={[s.text, s.center]}>
+              References available upon request
+            </Text>
+          )}
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
-    </div>
-  )
-}
+export default ResumePDF;

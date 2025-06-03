@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
 export type Education = { school: string; degree: string; year: string };
-export type Experience = { role: string; company: string; duration: string; description: string[] };
+export type Experience = { position: string; company: string; duration: string; description: string[] };
 export type Certification = { title: string; institution: string; year: string };
+export type Reference = { name: string; position: string; company: string; contact: string };
 
 export type FormDataType = {
   name: string;
@@ -17,6 +18,7 @@ export type FormDataType = {
   experience: Experience[];
   skills: string[];
   certifications: Certification[];
+  references: Reference[];
 };
 
 type ResumeStore = {
@@ -37,9 +39,10 @@ const defaultFormData: FormDataType = {
   image: null,
   summary: "",
   education: [{ school: "", degree: "", year: "" }],
-  experience: [{ role: "", company: "", duration: "", description: [""] }],
+  experience: [{ position: "", company: "", duration: "", description: [""] }],
   skills: [""],
   certifications: [{ title: "", institution: "", year: "" }],
+  references: [{ name: "", position: "", company: "", contact: "" }],
 };
 
 export const useResumeStore = create<ResumeStore>((set, get) => ({
@@ -47,8 +50,15 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
   setFormData: (data) => {
     const current = get().formData;
     const updated = typeof data === "function" ? data(current) : data;
+    const merged = { ...current, ...updated };
 
-    set({ formData: { ...current, ...updated } });
+    const hasChanges = Object.keys(updated).some(
+      (key) => current[key as keyof FormDataType] !== updated[key as keyof FormDataType]
+    );
+
+    if (hasChanges) {
+      set({ formData: merged });
+    }
   },
   resetForm: () => set({ formData: defaultFormData }),
 }));
