@@ -3,3 +3,8 @@ export interface PersonalDetailsFormProps {
     onBack: () => void;
   }
   
+export type TemplateProps = {
+  data: any;
+  color?: string
+};
+

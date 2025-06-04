@@ -22,65 +22,65 @@ import Stanford from "@/components/template/stanford";
 import Cambridge from "@/components/template/cambridge";
 import MIT from "@/components/template/mit";
 import Berkley from "@/components/template/berkeley";
-import { PDFViewer } from "@react-pdf/renderer";
-
-// Template map
-const templates = [
-  { id: "oxford", name: "Oxford", description: "Elegant and modern", component: Oxford },
-  { id: "harvard", name: "Harvard", description: "Professional layout", component: Harvard },
-  { id: "stanford", name: "Stanford", description: "Bold and stylish", component: Stanford },
-  { id: "cambridge", name: "Cambridge", description: "Minimalist design", component: Cambridge },
-  { id: "mit", name: "MIT", description: "Structured and clean", component: MIT },
-  { id: "berkeley", name: "Berkeley", description: "Creative and visual", component: Berkley },
-];
 
 const Preview: React.FC = () => {
   const formData = useResumeStore((state) => state.formData);
-  const layout = useLayoutStore((state) => state.layout);
   const color = useLayoutStore((state) => state.color);
-
+  const selectedTemplate = useLayoutStore((state) => state.selectedTemplate);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleOpenModal = () => {
-    if (selected) setIsModalOpen(true);
+    if (selectedTemplate) setIsModalOpen(true);
   };
-  
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-
-
-  const selected = templates.find((t) => t.id === layout);
-
-
-
   const renderTemplate = () => {
-    if (!selected) return <div className="text-gray-500 italic">No template selected.</div>;
+    if (!selectedTemplate) return null;
 
-    const Component = selected.component;
-    return <Component data={formData} color={color} />;
+    const props = {
+      data: formData,  // <-- use the global formData from your store
+      color: color ?? "ff0000",
+    };
+
+    switch (selectedTemplate.id) {
+      case "oxford":
+        return <Oxford {...props} />;
+      case "harvard":
+        return <Harvard {...props} />;
+      case "stanford":
+        return <Stanford {...props} />;
+      case "cambridge":
+        return <Cambridge {...props} />;
+      case "mit":
+        return <MIT {...props} />;
+      case "berkeley":
+        return <Berkley {...props} />;
+      default:
+        return <div>No template found</div>;
+    }
   };
 
-  if (!selected) {
+  if (!selectedTemplate) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="text-gray-500 italic text-center">
-          No template selected yet.
-        </div>
+      <div className="p-6 flex items-center justify-center">
+        <div className="text-gray-500 italic">No template selected.</div>
       </div>
     );
   }
 
   return (
-
-
-    <div className=" p-6 flex items-center justify-center">
+    <div className="p-6 flex items-center justify-center">
       <Card className="max-w-md w-full flex flex-col justify-between">
         <CardHeader>
-          <CardTitle>{selected.name}</CardTitle>
+          <CardTitle>{selectedTemplate.name}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">{selected.description}</p>
+          <p className="text-sm text-muted-foreground">
+            {selectedTemplate.description}
+          </p>
           <div className="mt-4 flex justify-end">
             <Button variant="outline" onClick={handleOpenModal}>
               Preview
@@ -90,14 +90,17 @@ const Preview: React.FC = () => {
       </Card>
 
       {/* Resume Preview Modal */}
-      <Dialog open={isModalOpen} onOpenChange={(open) => !open && handleCloseModal()}>
-        <DialogContent className="">
+      <Dialog
+        open={isModalOpen}
+        onOpenChange={(open) => {
+          if (!open) handleCloseModal();
+        }}
+      >
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Resume Preview</DialogTitle>
           </DialogHeader>
-          <div className="max-h-[calc(90vh-80px)] overflow-auto">
-            {renderTemplate()}
-          </div>
+          <div className="max-h-[calc(90vh-80px)] overflow-auto">{renderTemplate()}</div>
         </DialogContent>
       </Dialog>
     </div>
@@ -105,5 +108,3 @@ const Preview: React.FC = () => {
 };
 
 export default Preview;
-
-

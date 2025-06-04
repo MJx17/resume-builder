@@ -2,8 +2,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaLinkedin } from 'react-icons/fa';
+import { TemplateProps } from '@/types/types';
 
-export default function ModernResume({ data, color }: { data: any, color: string }) {
+export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (
@@ -27,22 +29,43 @@ export default function ModernResume({ data, color }: { data: any, color: string
 
         {/* Contact Info */}
         <div className="mb-6 text-left ml-2 text-[9px] text-gray-700 space-y-1">
-          {data.name && <div className="font-bold text-[12px] text-black text-center" style={{color}}>{data.name}</div>}
-          {data.address && <div>{data.address}</div>}
-          {data.phone && <div>{data.phone}</div>}
-          {data.email && <div>{data.email}</div>}
-          {data.linkedin && (
-            <div>
-              <Link
-                href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                LinkedIn
-              </Link>
-            </div>
-          )}
+        
+              {data.address && (
+                <div className="flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-[10px] text-gray-600" />
+                  <span>{data.address}</span>
+                </div>
+              )}
+
+              {data.phone && (
+                <div className="flex items-center gap-2">
+                  <FaPhoneAlt className="text-[10px] text-gray-600" />
+                  <span>{data.phone}</span>
+                </div>
+              )}
+
+              {data.email && (
+                <div className="flex items-center gap-2 ">
+                  <FaEnvelope className="text-[10px] text-gray-600" />
+                  <span>{data.email}</span>
+                </div>
+              )}
+
+
+              {data.linkedin && (
+                <div className="flex items-center gap-2">
+                  <FaLinkedin className="text-[10px] text-gray-600" />
+                  <Link
+                    href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    LinkedIn
+                  </Link>
+                </div>
+              )}
+        
         </div>
 
         {/* Skills */}

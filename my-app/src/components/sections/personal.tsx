@@ -33,7 +33,7 @@ const PersonalInfoForm: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8">
+    <div className="p-6 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8">
       {/* Left: Image preview */}
       <div className="relative w-36 h-36 border rounded-full bg-gray-100 flex-shrink-0 mx-auto md:mx-0">
         {imagePreview ? (

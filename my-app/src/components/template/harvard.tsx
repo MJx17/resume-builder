@@ -1,21 +1,22 @@
 "use client"
 
 import Link from 'next/link';
+import { TemplateProps } from '@/types/types';
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
+export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (
-    <div className="max-w-[700px] mx-auto p-5 bg-white text-[#222] text-sm font-sans ">
+    <div className="max-w-[700px] mx-auto p-5  text-sm font-sans ">
 
       {/* Header */}
       <div className="pb-2 mb-4">
         <div className="border-b border-[#444] mb-2">
-          <div className="text-[16px] font-bold text-black mb-1 text-center " style={{ color }}>{data.name}</div>
+          <div className="text-[16px] font-bold mb-1 text-center " style={{ color:color }}>{data.name}</div>
         </div>
         <div>
           <div>
-            <ul className="text-[9px] text-gray-600 mb-1 text-center flex flex-wrap justify-center gap-2 p-0 m-0 list-none">
+            <ul className="text-[9px]  mb-1 text-center flex flex-wrap justify-center gap-2 p-0 m-0 list-none">
               {data.address && (
                 <li className="flex items-center gap-1 before:content-['•'] before:mr-1">{data.address}</li>
               )}
@@ -47,10 +48,10 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* Summary */}
       {data.summary && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+          <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             Summary
           </div>
-          <div className="text-[11px] text-gray-600 font-normal text-justify">
+          <div className="text-[11px]  font-normal text-justify">
             {data.summary}
           </div>
         </div>
@@ -58,13 +59,13 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Education */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+        <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Education
         </div>
         {data.education.map((edu: any, idx: number) => (
           <div key={idx} className="mb-2">
             <div className="font-bold text-[13px]">{edu.school}</div>
-            <div className="flex justify-between text-[11px] text-gray-600 font-normal">
+            <div className="flex justify-between text-[11px]  font-normal">
               <span>{edu.degree}</span>
               <span>{edu.year}</span>
             </div>
@@ -74,14 +75,14 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Experience */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+        <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Experience
         </div>
         {data.experience.map((exp: any, idx: number) => (
           <div key={idx} className="mb-2">
             <div className="flex justify-between text-[13px] font-bold">
               <span>{exp.role} at {exp.company}</span>
-              <span className="text-[11px] text-gray-600 font-normal">{exp.duration}</span>
+              <span className="text-[11px]  font-normal">{exp.duration}</span>
             </div>
             <ul className="list-disc pl-5 text-[11px] mt-1 space-y-1">
               {Array.isArray(exp.description)
@@ -103,12 +104,12 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
 
       {/* Skills */}
       <div className="mb-6">
-        <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+        <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
           Skills
         </div>
         <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2">
           {data.skills.map((skill: string, idx: number) => (
-            <li key={idx} className="text-gray-800">{skill}</li>
+            <li key={idx} className="">{skill}</li>
           ))}
         </ul>
       </div>
@@ -116,13 +117,13 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* Certifications */}
       {data.certifications && (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+          <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             Certifications
           </div>
           {data.certifications.map((cert: any, idx: number) => (
             <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{cert.title} </div>
-              <div className="text-[11px] text-gray-600 font-normal flex justify-between">
+              <div className="font-bold text-[12px] ">{cert.title} </div>
+              <div className="text-[11px]  font-normal flex justify-between">
                 <span>{cert.institution}</span>
                 <span>{cert.year}</span>
               </div>
@@ -134,16 +135,16 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
       {/* References */}
       {data.references ? (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+          <div className="text-[12px] font-bold  pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             References
           </div>
           {data.references.map((ref: any, idx: number) => (
             <div key={idx} className="mb-2">
-              <div className="font-bold text-[12px] text-gray-800">{ref.name}</div>
-              <div className="text-[11px] text-gray-600 font-normal">
+              <div className="font-bold text-[12px] ">{ref.name}</div>
+              <div className="text-[11px]  font-normal">
                 {ref.title} at {ref.company}
               </div>
-              <div className="text-[11px] text-gray-600 font-normal">
+              <div className="text-[11px]  font-normal">
                 {ref.contact}
               </div>
             </div>
@@ -151,10 +152,10 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
         </div>
       ) : (
         <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
+          <div className="text-[12px] font-bold pb-1 mb-2 uppercase tracking-wide text-center" style={{ color }}>
             References
           </div>
-          <div className="text-[11px] text-gray-600 font-normal text-center">
+          <div className="text-[11px]  font-normal text-center">
             References available upon request
           </div>
         </div>

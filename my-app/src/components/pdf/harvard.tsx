@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
-import { useLayoutStore } from "@/store/layoutStore";
+
+
 
 const styles = (themeColor: string) =>
   StyleSheet.create({
@@ -38,6 +39,7 @@ const styles = (themeColor: string) =>
       fontSize: 10,
       marginBottom: 2,
       textAlign: "justify",
+      padding: 2
     },
     smallText: {
       fontSize: 9,
@@ -56,8 +58,8 @@ const styles = (themeColor: string) =>
     },
   });
 
-const ResumePDF = ({ data }: { data: any }) => {
-  const themeColor = useLayoutStore((state) => state.color || "#000");
+const ResumePDF = ({ data, color }: { data: any; color: string }) => {
+  const themeColor = color;
   const s = styles(themeColor);
 
   return (
@@ -66,6 +68,13 @@ const ResumePDF = ({ data }: { data: any }) => {
         {/* Header */}
         <View style={s.section}>
           <Text style={s.heading}>{data.name || "Full Name"}</Text>
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: "#000",
+              marginVertical: 6,
+            }}
+          />
           <Text style={[s.smallText, s.center]}>
             {[data.address, data.phone, data.email]
               .filter(Boolean)
@@ -116,25 +125,25 @@ const ResumePDF = ({ data }: { data: any }) => {
             {data.experience.map((exp: any, idx: number) => (
               <View key={idx} style={{ marginBottom: 4 }}>
                 <Text style={s.subheading}>
-                  {exp.role} at {exp.company}
+                  {exp.position} at {exp.company}
                 </Text>
                 <Text style={s.smallText}>{exp.duration}</Text>
                 {Array.isArray(exp.description)
                   ? exp.description.map((item: string, i: number) => (
-                      <Text key={i} style={s.text}>
-                        • {item.trim()}
-                      </Text>
-                    ))
+                    <Text key={i} style={s.text}>
+                      • {item.trim()}
+                    </Text>
+                  ))
                   : typeof exp.description === "string"
-                  ? exp.description
+                    ? exp.description
                       .split("•")
-                      .filter((item :string) => item.trim() !== "")
-                      .map((item: string, i:number) => (
+                      .filter((item: string) => item.trim() !== "")
+                      .map((item: string, i: number) => (
                         <Text key={i} style={s.text}>
                           • {item.trim()}
                         </Text>
                       ))
-                  : null}
+                    : null}
               </View>
             ))}
           </View>
@@ -177,7 +186,7 @@ const ResumePDF = ({ data }: { data: any }) => {
               <View key={idx}>
                 <Text style={s.subheading}>{ref.name}</Text>
                 <Text style={s.text}>
-                 {ref.company}
+                  {ref.company}
                 </Text>
                 <Text style={s.text}>{ref.contact}</Text>
               </View>

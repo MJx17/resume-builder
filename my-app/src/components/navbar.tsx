@@ -15,8 +15,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="shadow-md px-6 py-4 flex justify-between items-center">
-      <div className="text-2xl font-bold text-gray-800">ResumeBuilder</div>
+    <nav className="shadow-md dark:shadow-[#242424] px-6 py-4 flex justify-between items-center">
+      <div className="text-2xl font-bold ">ResumeBuilder</div>
 
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center justify-center flex-grow">
@@ -25,7 +25,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/create"
-                className="text-gray-700 font-medium hover:text-blue-600"
+                className=" font-medium hover:text-blue-600"
               >
                 Create
               </NavigationMenuLink>
@@ -33,7 +33,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/layouts"
-                className="text-gray-700 font-medium hover:text-blue-600"
+                className=" font-medium hover:text-blue-600"
               >
                 Layouts
               </NavigationMenuLink>
@@ -41,7 +41,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 href="/about"
-                className="text-gray-700 font-medium hover:text-blue-600"
+                className=" font-medium hover:text-blue-600"
               >
                 About
               </NavigationMenuLink>
@@ -52,8 +52,8 @@ const Navbar = () => {
 
 
 
-        <ModeToggle />
-   
+      <ModeToggle />
+
 
       {/* Contact Us Link */}
       <Link

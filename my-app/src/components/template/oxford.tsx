@@ -4,8 +4,9 @@ import Link from "next/link"
 import {
   FaEnvelope, FaLinkedin, FaPhoneAlt, FaMapMarkerAlt
 } from "react-icons/fa"
+import { TemplateProps } from '@/types/types';
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
+export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (

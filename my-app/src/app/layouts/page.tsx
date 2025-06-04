@@ -1,27 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Oxford from "@/components/template/oxford";
-import Harvard from "@/components/template/harvard";
-import Stanford from "@/components/template/stanford";
-import Cambridge from "@/components/template/cambridge";
-import MIT from "@/components/template/mit";
-import Berkley from "@/components/template/berkeley";
-import { templates } from "../data/data";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import ColorPicker from "@/components/color-picker";
 
- function ResumeTemplateSelector() {
+import Oxford from "@/components/template/oxford";
+import Harvard from "@/components/template/harvard";
+import Stanford from "@/components/template/stanford";
+import Cambridge from "@/components/template/cambridge";
+import MIT from "@/components/template/mit";
+import Berkley from "@/components/template/berkeley";
+
+import ColorPicker from "@/components/color-picker";
+import { templates } from "../data/data";
+
+import { useLayoutStore } from "@/store/layoutStore";
+
+function ResumeTemplateSelector() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
-  const [color, setColor] = useState("red"); // Default color
+
+  // Zustand selectors
+  const color = useLayoutStore((state) => state.color);
+  const selectedTemplate = useLayoutStore((state) => state.selectedTemplate);
+  const setColor = useLayoutStore((state) => state.setColor);
+  const setSelectedTemplate = useLayoutStore((state) => state.setSelectedTemplate);
 
   const handlePreview = (id: string) => {
     const template = templates.find((t) => t.id === id);
@@ -36,12 +49,12 @@ import ColorPicker from "@/components/color-picker";
     setSelectedTemplate(null);
   };
 
- const renderTemplate = () => {
+  const renderTemplate = () => {
     if (!selectedTemplate) return null;
 
     const props = {
       data: selectedTemplate.sampleData,
-      color,
+      color: color,
     };
 
     switch (selectedTemplate.id) {
@@ -64,7 +77,6 @@ import ColorPicker from "@/components/color-picker";
 
   return (
     <div className="min-h-screen p-6">
-      {/* Template Cards */}
       <div className="flex items-center justify-center min-h-[80vh]">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {templates.map((template) => (
@@ -90,7 +102,6 @@ import ColorPicker from "@/components/color-picker";
         </div>
       </div>
 
-      {/* Resume Preview Modal */}
       <Dialog
         open={isModalOpen}
         onOpenChange={(open) => !open && handleCloseModal()}
@@ -98,7 +109,6 @@ import ColorPicker from "@/components/color-picker";
         <DialogContent>
           <DialogHeader>
             <DialogTitle />
-            {/* Color Picker inside the modal */}
             <div className="absolute top-0 right-[-50px] z-50">
               <ColorPicker value={color} onChange={setColor} />
             </div>
@@ -112,4 +122,4 @@ import ColorPicker from "@/components/color-picker";
   );
 }
 
-export default  ResumeTemplateSelector;
+export default ResumeTemplateSelector;

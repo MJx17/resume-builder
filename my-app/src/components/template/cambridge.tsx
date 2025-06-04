@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaLinkedin } from 'react-icons/fa';
+import { TemplateProps } from '@/types/types';
 
-export default function ModernResume({ data, color }: { data: any, color: string }) {
+export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (

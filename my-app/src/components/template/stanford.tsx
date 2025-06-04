@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
+import { TemplateProps } from '@/types/types';
+
+export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (
