@@ -7,7 +7,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (
-    <div className="max-w-[700px] mx-auto p-5  text-sm font-sans ">
+    <div className=" mx-auto p-5  text-sm font-sans  break-words">
 
       {/* Header */}
       <div className="pb-2 mb-4">
@@ -81,7 +81,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
         {data.experience.map((exp: any, idx: number) => (
           <div key={idx} className="mb-2">
             <div className="flex justify-between text-[13px] font-bold">
-              <span>{exp.role} at {exp.company}</span>
+              <span>{exp.company}</span>
               <span className="text-[11px]  font-normal">{exp.duration}</span>
             </div>
             <ul className="list-disc pl-5 text-[11px] mt-1 space-y-1">
@@ -142,7 +142,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
             <div key={idx} className="mb-2">
               <div className="font-bold text-[12px] ">{ref.name}</div>
               <div className="text-[11px]  font-normal">
-                {ref.title} at {ref.company}
+                {ref.position} - {ref.company}
               </div>
               <div className="text-[11px]  font-normal">
                 {ref.contact}

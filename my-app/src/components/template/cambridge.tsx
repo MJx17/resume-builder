@@ -11,17 +11,17 @@ export default function ModernResume({ data, color }: TemplateProps) {
   return (
     <div className="">
 
-      <div className='max-w-[1200px] mx-auto text-[#222] text-xs font-sans p- space-y-6'>
+      <div className='break-words mx-auto  text-xs font-sans p- space-y-6'>
 
-        <div className="  border-[#0a0a0a] border-b-1">
-          <div className="text-center text-[#222] text-lg font-bold" style={{color}}>
+        <div className="  border-[#242424] border-b-1">
+          <div className="text-center text-lg font-bold" style={{color}}>
             {data.name}
             <p className="font-normal text-[9px] pb-5" style={{color}}>{data.title}</p>
           </div>
         </div>
 
 
-        <div className="mb-6 border-b-1 border-[#0a0a0a] grid grid-cols-[20%_80%] items-start pb-3">
+        <div className="mb-6 border-b-1 border-[#242424] grid grid-cols-[20%_80%] items-start pb-3">
           {/* Left: Profile Picture */}
           <div className="flex justify-center items-start my-auto mr-5">
             {data.image && (
@@ -40,7 +40,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
             {data.summary && (
               <>
                 <div className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color}}>Summary </div>
-                <p className="text-[8px] text-gray-700 text-justify">{data.summary}</p>
+                <p className="text-[8px]  text-justify">{data.summary}</p>
               </>
             )}
           </div>
@@ -49,30 +49,30 @@ export default function ModernResume({ data, color }: TemplateProps) {
 
 
 
-        <div className="flex text-[9px] text-gray-700 space-x-6">
+        <div className="flex text-[9px]  space-x-6">
           {/* Left Column */}
-          <div className="w-1/2 pr-4 border-r border-[#0a0a0a] space-y-6">
+          <div className="w-1/2 pr-4 border-r-2 border-[#807d7d] space-y-6">
             {/* Contact Section */}
             <div className="space-y-2">
               <div className="uppercase font-bold text-[10px] mb-1" style={{color}}>Contact</div>
 
               {data.address && (
                 <div className="flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-[10px] text-gray-600" />
+                  <FaMapMarkerAlt className="text-[10px] " />
                   <span>{data.address}</span>
                 </div>
               )}
 
               {data.phone && (
                 <div className="flex items-center gap-2">
-                  <FaPhoneAlt className="text-[10px] text-gray-600" />
+                  <FaPhoneAlt className="text-[10px] " />
                   <span>{data.phone}</span>
                 </div>
               )}
 
               {data.email && (
                 <div className="flex items-center gap-2 ">
-                  <FaEnvelope className="text-[10px] text-gray-600" />
+                  <FaEnvelope className="text-[10px] " />
                   <span>{data.email}</span>
                 </div>
               )}
@@ -80,7 +80,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
 
               {data.linkedin && (
                 <div className="flex items-center gap-2">
-                  <FaLinkedin className="text-[10px] text-gray-600" />
+                  <FaLinkedin className="text-[10px] " />
                   <Link
                     href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
                     target="_blank"
@@ -100,7 +100,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
                 {data.education.map((edu: any, idx: number) => (
                   <div key={idx} className="mb-2">
                     <div className="font-semibold">{edu.school}</div>
-                    <div className="flex justify-between text-gray-600">
+                    <div className="flex justify-between ">
                       <span>{edu.degree}</span>
                       <span>{edu.year}</span>
                     </div>
@@ -114,7 +114,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
             {data.skills && (
               <div className="mb-6">
                 <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Skills</div>
-                <ul className="text-[10px] text-gray-700 list-disc pl-5">
+                <ul className="text-[10px]  list-disc pl-5">
                   {data.skills.map((skill: string, idx: number) => (
                     <li key={idx}>{skill}</li>
                   ))}
@@ -137,9 +137,9 @@ export default function ModernResume({ data, color }: TemplateProps) {
                   <div key={idx} className="mb-3">
                     <div className="flex justify-between font-semibold">
                       <span>{exp.role} at {exp.company}</span>
-                      <span className="text-gray-500">{exp.duration}</span>
+                      <span className="">{exp.duration}</span>
                     </div>
-                    <ul className="list-disc pl-5 text-gray-600 mt-1 space-y-1 text-justify">
+                    <ul className="list-disc pl-5  mt-1 space-y-1 text-justify">
                       {Array.isArray(exp.description)
                         ? exp.description.map((item: string, i: number) => (
                           <li key={i}>{item.trim()}</li>
@@ -165,7 +165,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
                 {data.certifications.map((cert: any, idx: number) => (
                   <div key={idx} className="mb-2">
                     <div className="font-semibold text-[10px]">{cert.title}</div>
-                    <div className="text-[10px] text-gray-600 flex justify-between">
+                    <div className="text-[10px]  flex justify-between">
                       <span>{cert.institution}</span>
                       <span>{cert.year}</span>
                     </div>
@@ -183,15 +183,15 @@ export default function ModernResume({ data, color }: TemplateProps) {
                 {data.references.map((ref: any, idx: number) => (
                   <div key={idx} className="mb-2 text-[10px]">
                     <div className="font-semibold">{ref.name}</div>
-                    <div className="text-gray-600">{ref.title} at {ref.company}</div>
-                    <div className="text-gray-600">{ref.contact}</div>
+                    <div className="">{ref.position} at {ref.company}</div>
+                    <div className="">{ref.contact}</div>
                   </div>
                 ))}
               </div>
             ) : (
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
-                <div className="text-[10px] text-gray-600">Available upon request</div>
+                <div className="text-[10px] ">Available upon request</div>
               </div>
             )}
 

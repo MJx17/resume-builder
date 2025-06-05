@@ -10,47 +10,47 @@ export default function ModernResume({ data, color }: TemplateProps) {
   if (!data) return null
 
   return (
-    <div className="max-w-[900px] mx-auto p-6 font-sans text-sm space-y-6 text-[#222] print:bg-white print:text-black">
+    <div className="break-words mx-auto p-6 font-sans text-sm space-y-6 ">
 
       {/* Header */}
-      <div className="text-center text-blue-500">
+      <div className="text-center">
         <h1 style={{ color: color }} className="text-xl font-bold">{data.name}</h1>
-        <p style={{ color: color }} className="text-sm text-gray-600">{data.title}</p>
+        <p style={{ color: color }} className="text-sm ">{data.title}</p>
       </div>
       <section
         id="contact"
-        className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
+        className="border-l-4 pl-4  p-2 rounded"
         style={{ borderColor: color }}
       >
-        
+
         <h2
           className="text-sm font-bold tracking-wider mb-1"
           style={{ color: color }}
         >
           Contact
         </h2>
-        <div className="flex-col mt-2 text-xs text-gray-700">
+        <div className="flex-col mt-2 text-xs ">
           {data.address && (
             <div className="flex items-center gap-1 py-[1px]">
-              <FaMapMarkerAlt className="text-gray-500" />
+              <FaMapMarkerAlt className="" />
               <span>{data.address}</span>
             </div>
           )}
           {data.phone && (
             <div className="flex items-center gap-1 py-[1px]">
-              <FaPhoneAlt className="text-gray-500" />
+              <FaPhoneAlt className="" />
               <span>{data.phone}</span>
             </div>
           )}
           {data.email && (
             <div className="flex items-center gap-1 py-[1px]">
-              <FaEnvelope className="text-gray-500" />
+              <FaEnvelope className="" />
               <span>{data.email}</span>
             </div>
           )}
           {data.linkedin && (
             <div className="flex items-center gap-1 py-[1px]">
-              <FaLinkedin className="text-gray-500" />
+              <FaLinkedin className="" />
               <Link
                 href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
                 target="_blank"
@@ -70,7 +70,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
       {data.summary && (
         <section
           id="summary"
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
+          className="border-l-4 pl-4  p-2 rounded"
           style={{ borderColor: color }}
         >
           <h2
@@ -79,14 +79,14 @@ export default function ModernResume({ data, color }: TemplateProps) {
           >
             Summary
           </h2>
-          <p className="text-[11px] text-gray-700 leading-relaxed text-justify">{data.summary}</p>
+          <p className="text-[11px]  leading-relaxed text-justify">{data.summary}</p>
         </section>
       )}
 
       {/* Skills */}
       {data.skills?.length > 0 && (
         <section
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
+          className="border-l-4 pl-4  p-2 rounded"
           style={{ borderColor: color }}
         >
           <h2
@@ -97,7 +97,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
           </h2>
           <ul className="flex flex-wrap gap-2 text-[13px]">
             {data.skills.map((skill: string, idx: number) => (
-              <li key={idx} className="text-white px-3 py-1 rounded-full text-xs"
+              <li key={idx} className="px-3 py-1 rounded-full text-xs bg-gray-400 dark:bg-gray-400 text-white"
                 style={{ backgroundColor: color }}>
                 {skill}
               </li>
@@ -108,7 +108,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
 
       {/* Experience */}
       {data.experience?.length > 0 && (
-        <section className="border-l-4 -500 pl-4 bg-gray-200 p-2 rounded"
+        <section className="border-l-4 -500 pl-4  p-2 rounded"
           style={{ borderColor: color }}
         >
           <h2
@@ -121,8 +121,8 @@ export default function ModernResume({ data, color }: TemplateProps) {
             {data.experience.map((exp: any, idx: number) => (
               <div key={idx} className="relative mb-6">
                 <div className="text-[13px] font-semibold">{exp.role} @ {exp.company}</div>
-                <div className="text-[12px] text-gray-500 mb-1">{exp.duration}</div>
-                <ul className="text-xs text-gray-700 list-disc pl-5 leading-snug">
+                <div className="text-[12px]  mb-1">{exp.duration}</div>
+                <ul className="text-xs  list-disc pl-5 leading-snug">
                   {(Array.isArray(exp.description)
                     ? exp.description
                     : exp.description?.split("•") || []
@@ -140,7 +140,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
 
       {/* Education */}
       {data.education?.length > 0 && (
-        <section className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
+        <section className="border-l-4 pl-4  p-2 rounded"
           style={{ borderColor: color }}>
           <h2 className=" font-bold uppercase text-sm tracking-wider mb-2"
             style={{ color: color }}>
@@ -149,7 +149,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
           {data.education.map((edu: any, idx: number) => (
             <div key={idx} className="mb-2 text-[13px]">
               <div className="font-semibold">{edu.school}</div>
-              <div className="flex justify-between text-gray-600 text-[12px]">
+              <div className="flex justify-between  text-[12px]">
                 <span>{edu.degree}</span>
                 <span>{edu.year}</span>
               </div>
@@ -161,7 +161,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
       {/* Certifications */}
       {data.certifications?.length > 0 && (
         <section
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
+          className="border-l-4 pl-4  p-2 rounded"
           style={{ borderColor: color }}>
           <h2
             className=" font-bold uppercase text-sm tracking-wider mb-2"
@@ -172,7 +172,7 @@ export default function ModernResume({ data, color }: TemplateProps) {
           {data.certifications.map((cert: any, idx: number) => (
             <div key={idx} className="mb-2 text-[13px]">
               <div className="font-semibold">{cert.title}</div>
-              <div className="flex justify-between text-gray-600 text-[12px]">
+              <div className="flex justify-between  text-[12px]">
                 <span>{cert.institution}</span>
                 <span>{cert.year}</span>
               </div>
@@ -180,6 +180,45 @@ export default function ModernResume({ data, color }: TemplateProps) {
           ))}
         </section>
       )}
+
+
+      {data.references ? (
+
+        <section
+          className="border-l-4 pl-4  p-2 rounded"
+          style={{ borderColor: color }}>
+          <h2
+            className=" font-bold uppercase text-sm tracking-wider mb-2"
+            style={{ color: color }}
+          >
+            References
+          </h2>
+          {data.references.map((ref: any, idx: number) => (
+            <div key={idx} className="mb-2 text-[10px]">
+              <div className="font-semibold">{ref.name}</div>
+              <div className="">{ref.position} at {ref.company}</div>
+              <div className="">{ref.contact}</div>
+            </div>
+          ))}
+        </section>
+
+      ) : (
+        <div>
+          <section
+            className="border-l-4 pl-4  p-2 rounded"
+            style={{ borderColor: color }}>
+            <h2
+              className=" font-bold uppercase text-sm tracking-wider mb-2"
+              style={{ color: color }}
+            >
+              References
+            </h2>
+            <div className="text-[10px] ">Available upon request</div>
+          </section>
+
+        </div>
+      )}
+
     </div>
   )
 }

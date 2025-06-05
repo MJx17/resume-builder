@@ -179,6 +179,24 @@ export default function ResumePreview({ data, color }: { data: any, color: strin
           ))}
         </section>
       )}
+
+      {data.references ? (
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
+                {data.references.map((ref: any, idx: number) => (
+                  <div key={idx} className="mb-2 text-[10px]">
+                    <div className="font-semibold">{ref.name}</div>
+                    <div className="text-gray-600">{ref.position} at {ref.company}</div>
+                    <div className="text-gray-600">{ref.contact}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
+                <div className="text-[10px] text-gray-600">Available upon request</div>
+              </div>
+            )}
     </div>
   )
 }

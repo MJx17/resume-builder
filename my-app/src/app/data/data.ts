@@ -278,7 +278,7 @@ export const templates = [
     thumbnail: "/thumbnails/berkeley.png",
     sampleData: {
       name: "Lina Park",
-      title: "Freelance Web Developer",
+      title: "Web Developer",
       phone: "+1 510-555-0199",
       email: "lina.park@web.berkeley.io",
       address: "215 Creative Blvd, Berkeley, CA 94720, USA",

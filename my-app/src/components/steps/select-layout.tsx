@@ -162,7 +162,7 @@ const SelectLayout: React.FC = () => {
                   className="w-full h-40 object-cover rounded-md mb-4"
                 />
                 <h3 className="text-xl font-medium mb-2">{layout.name}</h3>
-                <p className="text-sm text-gray-500">{layout.description}</p>
+                <p className="text-sm">{layout.description}</p>
                 {selectedLayout === layout.id && (
                   <span className="absolute top-2 right-2 text-green-500 text-lg font-bold">
                     ✓

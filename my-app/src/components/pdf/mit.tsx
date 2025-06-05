@@ -186,7 +186,7 @@ export default function ModernResume({ data, color }: { data: any, color: string
                 {data.references.map((ref: any, idx: number) => (
                   <div key={idx} className="mb-2 text-[10px]">
                     <div className="font-semibold">{ref.name}</div>
-                    <div className="text-gray-600">{ref.title} at {ref.company}</div>
+                    <div className="text-gray-600">{ref.position} at {ref.company}</div>
                     <div className="text-gray-600">{ref.contact}</div>
                   </div>
                 ))}

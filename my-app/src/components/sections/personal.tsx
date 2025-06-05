@@ -5,14 +5,17 @@ import { MdEdit } from "react-icons/md";
 import { Input } from "@components/ui/input";
 import { Textarea } from "@components/ui/textarea";
 import { useResumeStore } from "@/store/personal";
+import { useLayoutStore } from "@/store/layoutStore";
 
 const PersonalInfoForm: React.FC = () => {
   const { formData, setFormData } = useResumeStore();
+  const { selectedTemplate } = useLayoutStore();
+
   const [imagePreview, setImagePreview] = useState<string>("");
+  const shouldShowImage = selectedTemplate?.formType === "image";
 
   useEffect(() => {
-    // Create preview URL when image changes
-    if (formData.image) {
+    if (formData.image && shouldShowImage) {
       const previewURL = URL.createObjectURL(formData.image);
       setImagePreview(previewURL);
       return () => {
@@ -21,7 +24,7 @@ const PersonalInfoForm: React.FC = () => {
     } else {
       setImagePreview("");
     }
-  }, [formData.image]);
+  }, [formData.image, shouldShowImage]);
 
   const handleChange = (field: keyof typeof formData, value: any) => {
     setFormData({ [field]: value });
@@ -32,9 +35,14 @@ const PersonalInfoForm: React.FC = () => {
     handleChange("image", file);
   };
 
-  return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8">
-      {/* Left: Image preview */}
+ return (
+  <div
+    className={`p-6 grid gap-8 ${
+      shouldShowImage ? "grid-cols-1 md:grid-cols-[auto_1fr]" : "grid-cols-1"
+    }`}
+  >
+    {/* Left: Image Preview and Upload */}
+    {shouldShowImage && (
       <div className="relative w-36 h-36 border rounded-full bg-gray-100 flex-shrink-0 mx-auto md:mx-0">
         {imagePreview ? (
           <img
@@ -48,6 +56,7 @@ const PersonalInfoForm: React.FC = () => {
           </div>
         )}
 
+        {/* Upload Icon */}
         <label
           htmlFor="image-upload"
           className="absolute bottom-1 right-1 bg-white rounded-full p-2 shadow cursor-pointer hover:bg-gray-100"
@@ -63,56 +72,51 @@ const PersonalInfoForm: React.FC = () => {
           className="hidden"
         />
       </div>
+    )}
 
-      {/* Right: Inputs */}
-      <div className="flex flex-col space-y-4">
-       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-          <Input
-            placeholder="Title"
-            value={formData.title}
-            onChange={(e) => handleChange("title", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-          <Input
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-          <Input
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-          <Input
-            placeholder="Address"
-            value={formData.address}
-            onChange={(e) => handleChange("address", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-          <Input
-            placeholder="LinkedIn URL"
-            value={formData.linkedin}
-            onChange={(e) => handleChange("linkedin", e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          />
-        </div>
-        <Textarea
-          placeholder="Summary"
-          value={formData.summary}
-          onChange={(e) => handleChange("summary", e.target.value)}
-          className="w-full px-4 py-2 border rounded-md shadow-sm min-h-[100px]"
+    {/* Right: Inputs */}
+    <div className="flex flex-col space-y-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={(e) => handleChange("name", e.target.value)}
+        />
+        <Input
+          placeholder="Title"
+          value={formData.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+        />
+        <Input
+          placeholder="Phone"
+          value={formData.phone}
+          onChange={(e) => handleChange("phone", e.target.value)}
+        />
+        <Input
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+        />
+        <Input
+          placeholder="Address"
+          value={formData.address}
+          onChange={(e) => handleChange("address", e.target.value)}
+        />
+        <Input
+          placeholder="LinkedIn URL"
+          value={formData.linkedin}
+          onChange={(e) => handleChange("linkedin", e.target.value)}
         />
       </div>
+      <Textarea
+        placeholder="Summary"
+        value={formData.summary}
+        onChange={(e) => handleChange("summary", e.target.value)}
+        className="min-h-36"
+      />
     </div>
-  );
-};
-
+  </div>
+);
+}
 export default PersonalInfoForm;
+ 

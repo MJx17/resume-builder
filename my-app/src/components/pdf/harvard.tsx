@@ -21,6 +21,7 @@ const styles = (themeColor: string) =>
     },
     section: {
       marginBottom: 12,
+      padding:4
     },
     heading: {
       fontSize: 13,
@@ -56,6 +57,11 @@ const styles = (themeColor: string) =>
     center: {
       textAlign: "center",
     },
+    rowBetween: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
   });
 
 const ResumePDF = ({ data, color }: { data: any; color: string }) => {
@@ -71,7 +77,7 @@ const ResumePDF = ({ data, color }: { data: any; color: string }) => {
           <View
             style={{
               borderBottomWidth: 1,
-              borderBottomColor: "#000",
+              borderBottomColor: "#242424",
               marginVertical: 6,
             }}
           />
@@ -108,11 +114,12 @@ const ResumePDF = ({ data, color }: { data: any; color: string }) => {
           <View style={s.section}>
             <Text style={s.heading}>Education</Text>
             {data.education.map((edu: any, idx: number) => (
-              <View key={idx} style={{ marginBottom: 4 }}>
-                <Text style={s.subheading}>{edu.school}</Text>
-                <Text style={s.text}>
-                  {edu.degree} — {edu.year}
-                </Text>
+              <View key={idx} style={{ marginBottom: 4, }}>
+                <View style={s.rowBetween}>
+                  <Text style={s.text}>{edu.degree}</Text>
+                  <Text style={s.text}>{edu.year}</Text>
+                </View>
+                Now the degree
               </View>
             ))}
           </View>
@@ -125,7 +132,7 @@ const ResumePDF = ({ data, color }: { data: any; color: string }) => {
             {data.experience.map((exp: any, idx: number) => (
               <View key={idx} style={{ marginBottom: 4 }}>
                 <Text style={s.subheading}>
-                  {exp.position} at {exp.company}
+                  {exp.position} -  {exp.company}
                 </Text>
                 <Text style={s.smallText}>{exp.duration}</Text>
                 {Array.isArray(exp.description)
@@ -169,10 +176,17 @@ const ResumePDF = ({ data, color }: { data: any; color: string }) => {
             <Text style={s.heading}>Certifications</Text>
             {data.certifications.map((cert: any, idx: number) => (
               <View key={idx}>
+
                 <Text style={s.subheading}>{cert.title}</Text>
-                <Text style={s.smallText}>
-                  {cert.institution} • {cert.year}
-                </Text>
+                <View style={s.rowBetween}>
+                  <Text style={s.smallText}>
+                    {cert.institution}
+                    <Text style={s.smallText}> 
+                      {cert.year}
+                    </Text>
+
+                  </Text>
+                </View>
               </View>
             ))}
           </View>
