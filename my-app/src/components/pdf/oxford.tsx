@@ -1,202 +1,282 @@
-"use client"
-
-import Link from "next/link"
 import {
-  FaEnvelope, FaLinkedin, FaPhoneAlt, FaMapMarkerAlt
-} from "react-icons/fa"
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet, Image
+} from '@react-pdf/renderer'
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
-  if (!data) return null
+import { IoLocation } from "react-icons/io5";
+
+// Styles
+const styles = (themeColor: string) =>
+  StyleSheet.create({
+    title: {
+      fontSize: 18,
+      marginBottom: 4,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      color: themeColor,
+    },
+    subtitle: {
+      fontSize: 11,
+      marginBottom: 6,
+      textAlign: 'center',
+      fontStyle: 'italic',
+      color: themeColor,
+    },
+    listItem: {
+      marginBottom: 2,
+      marginLeft: 8,
+    },
+    page: {
+      padding: 72,
+      fontSize: 11,
+      fontFamily: "Helvetica",
+      color: "#000",
+    },
+    heading: {
+      fontSize: 13,
+      fontWeight: "bold",
+      color: themeColor,
+      marginBottom: 4,
+      textTransform: "uppercase",
+    },
+    subheading: {
+      fontSize: 11,
+      fontWeight: "bold",
+      marginBottom: 2,
+    },
+    smallText: {
+      fontSize: 9,
+      color: "gray",
+    },
+    text: {
+      fontSize: 10,
+      marginBottom: 2,
+      textAlign: "justify",
+    },
+    section: {
+      marginBottom: 12,
+    },
+    borderBottom: {
+      borderBottomWidth: 1,
+      borderBottomColor: "#444",
+      marginVertical: 6,
+    },
+    rowBetween: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    sandwichBorder: {
+      borderTopWidth: 1,
+      borderTopColor: "#444",
+      borderBottomWidth: 1,
+      borderBottomColor: "#444",
+      paddingVertical: 4,
+      marginBottom: 6,
+    },
+    center: {
+      textAlign: "center",
+    },
+    bullet: {
+      fontSize: 10,
+      marginLeft: 12,
+      textAlign: "justify",
+    },
+    skillsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginTop: 4,
+    },
+    skillBadge: {
+      fontSize: 10,
+      color: '#fff',
+      paddingVertical: 2,
+      paddingHorizontal: 6,
+      borderRadius: 10,
+      marginRight: 4,
+      marginBottom: 4,
+    },
+    expItem: {
+      marginBottom: 4,
+    },
+    expTitle: {
+      fontWeight: 'bold',
+    },
+    eduItem: {
+      marginBottom: 4,
+    },
+    certItem: {
+      marginBottom: 4,
+    },
+    borderLeftHighlight: {
+      borderLeftWidth: 4,
+      paddingLeft: 8,
+    }
+  })
+
+const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
+  const s = styles(color)
+
+  const locationIcon = 'https://img.icons8.com/ios-filled/50/000000/marker.png';
+  const phoneIcon = 'https://img.icons8.com/ios-filled/50/000000/phone.png';
+  const emailIcon = 'https://img.icons8.com/ios-filled/50/000000/message-squared.png';
+  const linkedinIcon = 'https://img.icons8.com/ios-filled/50/000000/linkedin.png';
 
   return (
-    <div className="max-w-[900px] mx-auto p-6 font-sans text-sm space-y-6 text-[#222] print:bg-white print:text-black">
+    <Document>
+      <Page style={s.page}>
+        <View style={s.section}>
+          <Text style={s.title}>{data.name}</Text>
+          <Text style={s.subtitle}>{data.title}</Text>
+        </View>
 
-      {/* Header */}
-      <div className="text-center text-blue-500">
-        <h1 style={{ color: color }} className="text-xl font-bold">{data.name}</h1>
-        <p style={{ color: color }} className="text-sm text-gray-600">{data.title}</p>
-      </div>
-      <section
-        id="contact"
-        className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
-        style={{ borderColor: color }}
-      >
-        
-        <h2
-          className="text-sm font-bold tracking-wider mb-1"
-          style={{ color: color }}
-        >
-          Contact
-        </h2>
-        <div className="flex-col mt-2 text-xs text-gray-700">
+        <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+          <Text style={s.heading}>Contact</Text>
+
           {data.address && (
-            <div className="flex items-center gap-1 py-[1px]">
-              <FaMapMarkerAlt className="text-gray-500" />
-              <span>{data.address}</span>
-            </div>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+              <Image
+                src={locationIcon}
+                style={{ width: 12, height: 12, marginRight: 4 }}
+              />
+              <Text style={s.text}>{data.address}</Text>
+            </View>
           )}
+
           {data.phone && (
-            <div className="flex items-center gap-1 py-[1px]">
-              <FaPhoneAlt className="text-gray-500" />
-              <span>{data.phone}</span>
-            </div>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+              <Image
+                src={phoneIcon}
+                style={{ width: 12, height: 12, marginRight: 4 }}
+              />
+              <Text style={s.text}>{data.phone}</Text>
+            </View>
           )}
+
           {data.email && (
-            <div className="flex items-center gap-1 py-[1px]">
-              <FaEnvelope className="text-gray-500" />
-              <span>{data.email}</span>
-            </div>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+              <Image
+                src={emailIcon}
+                style={{ width: 12, height: 12, marginRight: 4 }}
+              />
+              <Text style={s.text}>{data.email}</Text>
+            </View>
           )}
+
           {data.linkedin && (
-            <div className="flex items-center gap-1 py-[1px]">
-              <FaLinkedin className="text-gray-500" />
-              <Link
-                href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
-                target="_blank"
-                className="text-blue-600 underline"
-              >
-                LinkedIn
-              </Link>
-            </div>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                src={linkedinIcon}
+                style={{ width: 12, height: 12, marginRight: 4 }}
+              />
+              <Text style={s.text}>{data.linkedin}</Text>
+            </View>
           )}
-
-        </div>
-      </section>
+        </View>
 
 
+        {data.summary && (
+          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={s.heading}>Summary</Text>
+            <Text>{data.summary}</Text>
+          </View>
+        )}
 
-      {/* Summary */}
-      {data.summary && (
-        <section
-          id="summary"
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
-          style={{ borderColor: color }}
-        >
-          <h2
-            className="text-sm font-bold tracking-wider mb-1"
-            style={{ color: color }}
-          >
-            Summary
-          </h2>
-          <p className="text-[11px] text-gray-700 leading-relaxed text-justify">{data.summary}</p>
-        </section>
-      )}
+        {data.skills?.length > 0 && (
+          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[s.heading, { color }]}>{'Skills'}</Text>
+            <View style={s.skillsContainer}>
+              {data.skills.map((skill: string, idx: number) => (
+                <Text
+                  key={idx}
+                  style={[s.skillBadge, { backgroundColor: color }]}
+                >
+                  {skill}
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
 
-      {/* Skills */}
-      {data.skills?.length > 0 && (
-        <section
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
-          style={{ borderColor: color }}
-        >
-          <h2
-            className="text-sm font-bold tracking-wider mb-2"
-            style={{ color: color }}
-          >
-            Skills
-          </h2>
-          <ul className="flex flex-wrap gap-2 text-[13px]">
-            {data.skills.map((skill: string, idx: number) => (
-              <li key={idx} className="text-white px-3 py-1 rounded-full text-xs"
-                style={{ backgroundColor: color }}>
-                {skill}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        {data.experience?.length > 0 && (
+          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[s.heading, { color: color }]}>Experience</Text>
 
-      {/* Experience */}
-      {data.experience?.length > 0 && (
-        <section className="border-l-4 -500 pl-4 bg-gray-200 p-2 rounded"
-          style={{ borderColor: color }}
-        >
-          <h2
-            className="font-bold uppercase text-sm tracking-wider mb-2"
-            style={{ color: color }}
-          >
-            Experience
-          </h2>
-          <div className="relative border-l-2 border-gray-300 pl-4 ml-1">
             {data.experience.map((exp: any, idx: number) => (
-              <div key={idx} className="relative mb-6">
-                <div className="text-[13px] font-semibold">{exp.role} @ {exp.company}</div>
-                <div className="text-[12px] text-gray-500 mb-1">{exp.duration}</div>
-                <ul className="text-xs text-gray-700 list-disc pl-5 leading-snug">
-                  {(Array.isArray(exp.description)
-                    ? exp.description
-                    : exp.description?.split("•") || []
-                  )
-                    .filter((item: string) => item.trim())
-                    .map((item: string, i: number) => (
-                      <li key={i}>{item.trim()}</li>
-                    ))}
-                </ul>
-              </div>
+              <View
+                key={idx}
+                style={{
+                  borderLeftWidth: 2,
+                  borderLeftColor: '#d1d5db', // Tailwind gray-300
+                  paddingLeft: 8,
+                  marginBottom: 12,
+                  position: 'relative',
+                }}
+              >
+                <Text style={[s.expTitle, { fontSize: 13, fontWeight: '600' }]}>
+                  {exp.role} @ {exp.company}
+                </Text>
+                <Text style={{ fontSize: 12, marginBottom: 4 }}>{exp.duration}</Text>
+                {(Array.isArray(exp.description)
+                  ? exp.description
+                  : exp.description?.split('•') || []
+                )
+                  .filter((item: string) => item.trim())
+                  .map((desc: string, i: number) => (
+                    <Text key={i} style={[s.listItem, { fontSize: 10, marginLeft: 8, marginBottom: 2 }]}>
+                      • {desc.trim()}
+                    </Text>
+                  ))}
+              </View>
             ))}
-          </div>
-        </section>
-      )}
+          </View>
+        )}
 
-      {/* Education */}
-      {data.education?.length > 0 && (
-        <section className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
-          style={{ borderColor: color }}>
-          <h2 className=" font-bold uppercase text-sm tracking-wider mb-2"
-            style={{ color: color }}>
-            Education
-          </h2>
-          {data.education.map((edu: any, idx: number) => (
-            <div key={idx} className="mb-2 text-[13px]">
-              <div className="font-semibold">{edu.school}</div>
-              <div className="flex justify-between text-gray-600 text-[12px]">
-                <span>{edu.degree}</span>
-                <span>{edu.year}</span>
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
 
-      {/* Certifications */}
-      {data.certifications?.length > 0 && (
-        <section
-          className="border-l-4 pl-4 bg-gray-200 p-2 rounded"
-          style={{ borderColor: color }}>
-          <h2
-            className=" font-bold uppercase text-sm tracking-wider mb-2"
-            style={{ color: color }}
-          >
-            Certifications
-          </h2>
-          {data.certifications.map((cert: any, idx: number) => (
-            <div key={idx} className="mb-2 text-[13px]">
-              <div className="font-semibold">{cert.title}</div>
-              <div className="flex justify-between text-gray-600 text-[12px]">
-                <span>{cert.institution}</span>
-                <span>{cert.year}</span>
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
+        {data.education?.length > 0 && (
+          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={s.heading}>Education</Text>
+            {data.education.map((edu: any, idx: number) => (
+              <View key={idx} style={s.eduItem}>
+                <Text style={s.expTitle}>{edu.school}</Text>
+                <Text>{edu.degree} — {edu.year}</Text>
+              </View>
+            ))}
+          </View>
+        )}
 
-      {data.references ? (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
-                {data.references.map((ref: any, idx: number) => (
-                  <div key={idx} className="mb-2 text-[10px]">
-                    <div className="font-semibold">{ref.name}</div>
-                    <div className="text-gray-600">{ref.position} at {ref.company}</div>
-                    <div className="text-gray-600">{ref.contact}</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
-                <div className="text-[10px] text-gray-600">Available upon request</div>
-              </div>
-            )}
-    </div>
+        {data.certifications?.length > 0 && (
+          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={s.heading}>Certifications</Text>
+            {data.certifications.map((cert: any, idx: number) => (
+              <View key={idx} style={s.certItem}>
+                <Text style={s.expTitle}>{cert.title}</Text>
+                <Text>{cert.institution} — {cert.year}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
+          <Text style={s.heading}>References</Text>
+          {data.references?.length > 0 ? (
+            data.references.map((ref: any, idx: number) => (
+              <View key={idx}>
+                <Text>{ref.name}</Text>
+                <Text>{ref.position} at {ref.company}</Text>
+                <Text>{ref.contact}</Text>
+              </View>
+            ))
+          ) : (
+            <Text>Available upon request</Text>
+          )}
+        </View>
+      </Page>
+    </Document>
   )
 }
+
+export default StanfordPDF

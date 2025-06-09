@@ -8,7 +8,9 @@ import Harvard from "@components/pdf/harvard";
 import BerkeleyPDF from "@components/pdf/berkeley";
 import Cambridge from "@components/pdf/cambridge";
 import DummyPDF from "@components/pdf/dummpdf";
-
+import Stanford from '@/components/pdf/stanford';
+import Oxford from '@/components/pdf/oxford';
+import MIT from '@components/pdf/mit'
 import {
   Dialog,
   DialogContent,
@@ -29,6 +31,12 @@ const DownloadResume: React.FC = () => {
         return BerkeleyPDF;
       case "cambridge":
         return Cambridge;
+      case "stanford":
+        return Stanford;
+      case "oxford":
+        return Oxford;
+      case "mit":
+        return MIT;
       default:
         return DummyPDF;
     }
@@ -51,7 +59,7 @@ const DownloadResume: React.FC = () => {
         </PDFDownloadLink>
       </div>
 
-      <Button className="bg-blue-500 hover:bg-blue-600 text-white w-40"  onClick={() => setOpen(true)}>
+      <Button className="bg-blue-500 hover:bg-blue-600 text-white w-40" onClick={() => setOpen(true)}>
         Print Preview
       </Button>
 

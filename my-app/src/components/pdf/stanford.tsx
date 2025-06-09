@@ -1,167 +1,232 @@
-"use client"
+// components/pdf/StanfordPDF.tsx
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 
-import Link from 'next/link';
+const styles = (themeColor: string) =>
+  StyleSheet.create({
+    page: {
+      padding: 72,
+      fontSize: 11,
+      fontFamily: "Helvetica",
+      color: "#000",
+    },
+    heading: {
+      fontSize: 13,
+      fontWeight: "bold",
+      color: themeColor,
+      marginBottom: 4,
+      textTransform: "uppercase",
+    },
+    subheading: {
+      fontSize: 11,
+      fontWeight: "bold",
+      marginBottom: 2,
+    },
+    smallText: {
+      fontSize: 9,
+      color: "gray",
+    },
+    text: {
+      fontSize: 10,
+      marginBottom: 2,
+      textAlign: "justify",
+    },
+    section: {
+      marginBottom: 12,
+    },
+    borderBottom: {
+      borderBottomWidth: 1,
+      borderBottomColor: "#444",
+      marginVertical: 6,
+    },
+    rowBetween: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    sandwichBorder: {
+      borderTopWidth: 1,
+      borderTopColor: "#444",
+      borderBottomWidth: 1,
+      borderBottomColor: "#444",
+      paddingVertical: 4,
+      marginBottom: 6,
+    },
+    center: {
+      textAlign: "center",
+    },
 
-export default function ResumePreview({ data, color }: { data: any, color: string }) {
-  if (!data) return null
+    bullet: {
+      fontSize: 10,
+      marginLeft: 12,
+      textAlign: "justify",
+    },
+  });
+
+const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
+  const s = styles(color);
 
   return (
-    <div className="max-w-[700px] mx-auto p-5 bg-white text-[#222] text-sm font-sans ">
-
-      {/* Header */}
-      <div className="pb-2 mb-4 border-b border-[#444]">
-        <div className="mb-6 border-b border-[#444]">
-          <div className="text-[16px] font-bold text-black mb-1 text-center" style={{color}}>{data.name}</div>
-          <div className="flex flex-col items-center text-[9px] text-gray-600 mb-1 text-center">
-            {data.address && <div>{data.address}</div>}
-            {data.phone && <div>{data.phone}</div>}
-            {data.email && <div>{data.email}</div>}
+    <Document>
+      <Page size="A4" style={s.page}>
+        {/* Header */}
+        <View style={s.section}>
+          <Text style={[s.heading, { textAlign: "center" }]}>{data.name}</Text>
+          <View style={{ textAlign: "center" }}>
+            {data.address && <Text style={s.smallText}>{data.address}</Text>}
+            {data.phone && <Text style={s.smallText}>{data.phone}</Text>}
+            {data.email && <Text style={s.smallText}>{data.email}</Text>}
             {data.linkedin && (
-                <Link
-                href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
-                target="_blank"
-                className="text-blue-600 underline"
+              <Link
+                style={s.smallText}
+                src={
+                  data.linkedin.startsWith("http")
+                    ? data.linkedin
+                    : `https://${data.linkedin}`
+                }
               >
                 LinkedIn
               </Link>
             )}
-          </div>
+            <View style={s.borderBottom} />
+          </View>
+        </View>
 
-
-        </div>
 
         {/* Summary */}
-        <div className="mb-6 border-b border-[#444]">
-          <div className='mb-6 '>
-            {data.summary && (
-              <div className="mb-6 ">
-                <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide "  style={{color}}>
-                  Summary
-                </div>
-                <div className="text-[11px] text-gray-600 font-normal ml-2 text-justify">
-                  {data.summary}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        {data.summary && (
+          <View style={s.section}>
+            <Text style={s.heading}>Summary</Text>
+            <Text style={s.text}>{data.summary}</Text>
+          </View>
+        )}
 
+
+        <View style={s.borderBottom} />
         {/* Education */}
-
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide "  style={{color}}>
-            Education
-          </div>
-          {data.education.map((edu: any, idx: number) => (
-            <div key={idx} className="mb-2 ml-2">
-              <div className="font-bold text-[12px]">{edu.school}</div>
-              <div className="flex justify-between text-[11px] text-gray-600 font-normal">
-                <span>{edu.degree}</span>
-                <span>{edu.year}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        {data.education?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Education</Text>
+            {data.education.map((edu: any, idx: number) => (
+              <View key={idx} style={{ marginBottom: 6 }}>
+                <Text style={s.subheading}>{edu.school}</Text>
+                <View style={s.rowBetween}>
+                  <Text style={s.text}>{edu.degree}</Text>
+                  <Text style={s.text}>{edu.year}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
 
 
-      {/* Experience */}
-      <div className="mb-6 border-b border-[#444]">
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide"  style={{color}}> 
-            Experience
-          </div>
-          {data.experience.map((exp: any, idx: number) => (
-            <div key={idx} className="mb-2 ml-2">
-              <div className="flex justify-between text-[11px] font-bold">
-                <span>{exp.role} at {exp.company}</span>
-                <span className="text-[10px] text-gray-600 font-normal">{exp.duration}</span>
-              </div>
-              <ul className="list-disc pl-5 text-[10px] mt-1 space-y-1 text-justify">
+        <View style={s.borderBottom} />
+        {/* Experience */}
+        {data.experience?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Experience</Text>
+            {data.experience.map((exp: any, idx: number) => (
+              <View key={idx} style={{ marginBottom: 6 }}>
+                <View style={s.rowBetween}>
+                  <Text style={s.subheading}>
+                    {exp.role} at {exp.company}
+                  </Text>
+                  <Text style={s.smallText}>{exp.duration}</Text>
+                </View>
                 {Array.isArray(exp.description)
-                  ? exp.description.map((item: string, i: number) => (
-                    <li key={i}>{item.trim()}</li>
+                  ? exp.description.map((desc: string, i: number) => (
+                    <Text key={i} style={s.bullet}>
+                      • {desc.trim()}
+                    </Text>
                   ))
-                  : typeof exp.description === 'string'
+                  : typeof exp.description === "string"
                     ? exp.description
                       .split("•")
                       .filter((item: string) => item.trim() !== "")
                       .map((item: string, i: number) => (
-                        <li key={i}>{item.trim()}</li>
+                        <Text key={i} style={s.bullet}>
+                          • {item.trim()}
+                        </Text>
                       ))
                     : null}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Skills */}
-      <div className="mb-6 border-b border-[#444]">
-        <div className="mb-6">
-          <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide"  style={{color}}>
-            Skills
-          </div>
-       
-          <ul className="list-disc pl-5 text-[11px] grid grid-cols-3 gap-2 ml-2 ">
-            {data.skills.map((skill: string, idx: number) => (
-              <li key={idx} className="text-gray-800">{skill}</li>
+              </View>
             ))}
-          </ul>
-         
-        </div>
-      </div>
+          </View>
+        )}
 
-      <div className="mb-6 border-b border-[#444]">
-        {data.certifications && (
-          <div className="mb-6">
-            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide"  style={{color}}>
-              Certifications
-            </div>
+        <View style={s.borderBottom} />
+        {/* Skills */}
+        {data.skills?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Skills</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {data.skills.map((skill: string, idx: number) => (
+                <Text key={idx} style={[s.text, { width: "33.33%" }]}>
+                  • {skill}
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
+
+
+
+        {/* Certifications */}
+        <View style={s.borderBottom} />
+        {data.certifications?.length > 0 && (
+          <View style={s.section}>
+            <Text style={s.heading}>Certifications</Text>
             {data.certifications.map((cert: any, idx: number) => (
-              <div key={idx} className="mb-2 ml-2">
-                <div className="font-bold text-[12px] text-gray-800">{cert.title} </div>
-                <div className="text-[11px] text-gray-600 font-normal flex justify-between">
-                  <span>{cert.institution}</span>
-                  <span>{cert.year}</span>
-                </div>
-              </div>
+              <View key={idx}>
+
+                <Text style={s.subheading}>{cert.title}</Text>
+                <View style={s.rowBetween}>
+                  <Text style={s.smallText}>
+                    {cert.institution}
+                    <Text style={s.smallText}>
+                      {cert.year}
+                    </Text>
+
+                  </Text>
+                </View>
+              </View>
             ))}
-          </div>
+          </View>
         )}
-      </div>
 
-
-      {/* References */}
-      <div className="mb-6 border-b border-[#444]">
-        {data.references ? (
-          <div className="mb-6">
-            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide"  style={{color}}>
-              References
-            </div>
-            {data.references.map((ref: any, idx: number) => (
-              <div key={idx} className="mb-2 ml-2">
-                <div className="font-bold text-[12px] text-gray-800">{ref.name}</div>
-                <div className="text-[11px] text-gray-600 font-normal">
-                  {ref.title} at {ref.company}
-                </div>
-                <div className="text-[11px] text-gray-600 font-normal">
-                  {ref.contact}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="mb-6">
-            <div className="text-[12px] font-bold text-gray-800 pb-1 mb-2 uppercase tracking-wide"  style={{color}}>
-              References
-            </div>
-            <div className="text-[11px] text-gray-600 font-normal ml-2">
+        {/* References */}
+        <View style={s.borderBottom} />
+        <View style={s.section}>
+          <Text style={s.heading}>References</Text>
+          {data.references?.length > 0 ? (
+            data.references.map((ref: any, idx: number) => (
+              <View key={idx}>
+                <Text style={s.subheading}>{ref.name}</Text>
+                <Text style={s.text}>
+                  {ref.company}
+                </Text>
+                <Text style={s.text}>{ref.contact}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={[s.text, s.center]}>
               References available upon request
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+            </Text>
+          )}
+        </View>
+        <View style={s.borderBottom} />
+
+
+
+      </Page>
+    </Document>
+  );
+};
+
+export default StanfordPDF;

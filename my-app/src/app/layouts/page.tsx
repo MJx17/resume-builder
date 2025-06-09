@@ -109,9 +109,17 @@ function ResumeTemplateSelector() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle />
-            <div className="absolute top-0 right-[-50px] z-50">
+            <div className="
+                  absolute 
+                  top-4 
+                  left-1/2 
+                  -translate-x-1/2 
+                  z-50
+                  md:left-auto md:right-[-50px] md:translate-x-0
+                ">
               <ColorPicker value={color} onChange={setColor} />
             </div>
+
           </DialogHeader>
           <div className="max-h-[calc(90vh-80px)] overflow-auto">
             {renderTemplate()}

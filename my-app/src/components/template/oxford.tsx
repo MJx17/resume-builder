@@ -117,9 +117,9 @@ export default function ModernResume({ data, color }: TemplateProps) {
           >
             Experience
           </h2>
-          <div className="relative border-l-2 border-gray-300 pl-4 ml-1">
+          <div className=" ">
             {data.experience.map((exp: any, idx: number) => (
-              <div key={idx} className="relative mb-6">
+              <div key={idx} className="relative mb-6 border-l-2 border-gray-300 pl-4 ml-1">
                 <div className="text-[13px] font-semibold">{exp.role} @ {exp.company}</div>
                 <div className="text-[12px]  mb-1">{exp.duration}</div>
                 <ul className="text-xs  list-disc pl-5 leading-snug">

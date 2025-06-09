@@ -7,6 +7,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { COLORS } from "@components/color-picker";
 import { useLayoutStore } from "@/store/layoutStore";
 import { useFormNavigationContext } from "@/context/formNavigationContext";
@@ -123,19 +131,33 @@ const SelectLayout: React.FC = () => {
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-3">Choose a theme color</h2>
         <div className="flex justify-center flex-wrap gap-3">
-          {COLORS.map((col) => (
-            <button
-              key={col.id}
-              className={`w-8 h-8 rounded-full border-2 ${selectedColor === col.id ? "ring-2 ring-offset-2 ring-blue-500" : "border-gray-300"
-                }`}
-              style={{ backgroundColor: col.color }}
-              onClick={() => handleSelectColor(col.id)}
-              aria-label={col.id}
-              aria-pressed={selectedColor === col.id}
-              title={col.id}
-              type="button"
-            />
-          ))}
+
+
+          <TooltipProvider>
+            <div className="flex flex-wrap gap-4 p-2">
+              {COLORS.map((col) => (
+                <Tooltip key={col.id}>
+                  <TooltipTrigger asChild>
+                    <button
+                      className={`w-8 h-8 rounded-full border-2 ${selectedColor === col.id
+                          ? "ring-2 ring-offset-2 ring-blue-500"
+                          : "border-gray-300"
+                        }`}
+                      style={{ backgroundColor: col.color }}
+                      onClick={() => handleSelectColor(col.id)}
+                      aria-label={col.id}
+                      aria-pressed={selectedColor === col.id}
+                      type="button"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={4}>
+                    {col.id}
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
+         
         </div>
 
       </div>
