@@ -1,3 +1,4 @@
+import Oxford from '@/components/pdf/oxford';
 import {
   Document,
   Page,
@@ -5,11 +6,11 @@ import {
   View,
   StyleSheet, Image
 } from '@react-pdf/renderer'
+import { TemplateProps } from '@/types/types';
 
-import { IoLocation } from "react-icons/io5";
 
 // Styles
-const styles = (themeColor: string) =>
+const styles =
   StyleSheet.create({
     title: {
       fontSize: 18,
@@ -17,14 +18,14 @@ const styles = (themeColor: string) =>
       textAlign: 'center',
       fontWeight: 'bold',
       textTransform: 'uppercase',
-      color: themeColor,
+
     },
     subtitle: {
       fontSize: 11,
       marginBottom: 6,
       textAlign: 'center',
       fontStyle: 'italic',
-      color: themeColor,
+
     },
     listItem: {
       marginBottom: 2,
@@ -39,7 +40,7 @@ const styles = (themeColor: string) =>
     heading: {
       fontSize: 13,
       fontWeight: "bold",
-      color: themeColor,
+
       marginBottom: 4,
       textTransform: "uppercase",
     },
@@ -117,9 +118,7 @@ const styles = (themeColor: string) =>
     }
   })
 
-const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
-  const s = styles(color)
-
+const OxfordPDF = ({ data, color }: TemplateProps) => {
   const locationIcon = 'https://img.icons8.com/ios-filled/50/000000/marker.png';
   const phoneIcon = 'https://img.icons8.com/ios-filled/50/000000/phone.png';
   const emailIcon = 'https://img.icons8.com/ios-filled/50/000000/message-squared.png';
@@ -127,73 +126,57 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
 
   return (
     <Document>
-      <Page style={s.page}>
-        <View style={s.section}>
-          <Text style={s.title}>{data.name}</Text>
-          <Text style={s.subtitle}>{data.title}</Text>
+      <Page style={styles.page}>
+        {/* Header */}
+        <View style={styles.section}>
+          <Text style={styles.title}>{data.name}</Text>
+          <Text style={styles.subtitle}>{data.title}</Text>
         </View>
 
-        <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-          <Text style={s.heading}>Contact</Text>
-
+        {/* Contact Section */}
+        <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+          <Text style={[styles.heading, { color }]}>Contact</Text>
           {data.address && (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Image
-                src={locationIcon}
-                style={{ width: 12, height: 12, marginRight: 4 }}
-              />
-              <Text style={s.text}>{data.address}</Text>
+              <Image src={locationIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
+              <Text style={styles.text}>{data.address}</Text>
             </View>
           )}
-
           {data.phone && (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Image
-                src={phoneIcon}
-                style={{ width: 12, height: 12, marginRight: 4 }}
-              />
-              <Text style={s.text}>{data.phone}</Text>
+              <Image src={phoneIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
+              <Text style={styles.text}>{data.phone}</Text>
             </View>
           )}
-
           {data.email && (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Image
-                src={emailIcon}
-                style={{ width: 12, height: 12, marginRight: 4 }}
-              />
-              <Text style={s.text}>{data.email}</Text>
+              <Image src={emailIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
+              <Text style={styles.text}>{data.email}</Text>
             </View>
           )}
-
           {data.linkedin && (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                src={linkedinIcon}
-                style={{ width: 12, height: 12, marginRight: 4 }}
-              />
-              <Text style={s.text}>{data.linkedin}</Text>
+              <Image src={linkedinIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
+              <Text style={styles.text}>{data.linkedin}</Text>
             </View>
           )}
         </View>
 
-
+        {/* Summary */}
         {data.summary && (
-          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-            <Text style={s.heading}>Summary</Text>
-            <Text>{data.summary}</Text>
+          <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={styles.heading}>Summary</Text>
+            <Text style={styles.text}>{data.summary}</Text>
           </View>
         )}
 
+        {/* Skills */}
         {data.skills?.length > 0 && (
-          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-            <Text style={[s.heading, { color }]}>{'Skills'}</Text>
-            <View style={s.skillsContainer}>
+          <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[styles.heading, { color }]}>Skills</Text>
+            <View style={styles.skillsContainer}>
               {data.skills.map((skill: string, idx: number) => (
-                <Text
-                  key={idx}
-                  style={[s.skillBadge, { backgroundColor: color }]}
-                >
+                <Text key={idx} style={[styles.skillBadge, { backgroundColor: color }]}>
                   {skill}
                 </Text>
               ))}
@@ -201,32 +184,30 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
           </View>
         )}
 
+        {/* Experience */}
         {data.experience?.length > 0 && (
-          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-            <Text style={[s.heading, { color: color }]}>Experience</Text>
-
+          <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[styles.heading, { color }]}>Experience</Text>
             {data.experience.map((exp: any, idx: number) => (
               <View
                 key={idx}
                 style={{
                   borderLeftWidth: 2,
-                  borderLeftColor: '#d1d5db', // Tailwind gray-300
+                  borderLeftColor: '#d1d5db',
                   paddingLeft: 8,
                   marginBottom: 12,
-                  position: 'relative',
                 }}
               >
-                <Text style={[s.expTitle, { fontSize: 13, fontWeight: '600' }]}>
+                <Text style={[styles.expTitle, { fontSize: 13, fontWeight: '600' }]}>
                   {exp.role} @ {exp.company}
                 </Text>
                 <Text style={{ fontSize: 12, marginBottom: 4 }}>{exp.duration}</Text>
                 {(Array.isArray(exp.description)
                   ? exp.description
-                  : exp.description?.split('•') || []
-                )
+                  : exp.description?.split('•') || [])
                   .filter((item: string) => item.trim())
                   .map((desc: string, i: number) => (
-                    <Text key={i} style={[s.listItem, { fontSize: 10, marginLeft: 8, marginBottom: 2 }]}>
+                    <Text key={i} style={styles.bullet}>
                       • {desc.trim()}
                     </Text>
                   ))}
@@ -235,38 +216,46 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
           </View>
         )}
 
-
+        {/* Education */}
         {data.education?.length > 0 && (
-          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-            <Text style={s.heading}>Education</Text>
+          <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[styles.heading, { color }]}>Education</Text>
             {data.education.map((edu: any, idx: number) => (
-              <View key={idx} style={s.eduItem}>
-                <Text style={s.expTitle}>{edu.school}</Text>
-                <Text>{edu.degree} — {edu.year}</Text>
+              <View key={idx} style={styles.eduItem}>
+                <Text style={styles.expTitle}>{edu.school}</Text>
+                <Text>
+                  {edu.degree} — {edu.year}
+                </Text>
               </View>
             ))}
           </View>
         )}
 
+        {/* Certifications */}
         {data.certifications?.length > 0 && (
-          <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-            <Text style={s.heading}>Certifications</Text>
+          <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+            <Text style={[styles.heading, { color }]}>Certifications</Text>
             {data.certifications.map((cert: any, idx: number) => (
-              <View key={idx} style={s.certItem}>
-                <Text style={s.expTitle}>{cert.title}</Text>
-                <Text>{cert.institution} — {cert.year}</Text>
+              <View key={idx} style={styles.certItem}>
+                <Text style={styles.expTitle}>{cert.title}</Text>
+                <Text>
+                  {cert.institution} — {cert.year}
+                </Text>
               </View>
             ))}
           </View>
         )}
 
-        <View style={[s.section, s.borderLeftHighlight, { borderLeftColor: color }]}>
-          <Text style={s.heading}>References</Text>
+        {/* References */}
+        <View style={[styles.section, styles.borderLeftHighlight, { borderLeftColor: color }]}>
+          <Text style={[styles.heading, { color }]}>References</Text>
           {data.references?.length > 0 ? (
             data.references.map((ref: any, idx: number) => (
               <View key={idx}>
                 <Text>{ref.name}</Text>
-                <Text>{ref.position} at {ref.company}</Text>
+                <Text>
+                  {ref.position} at {ref.company}
+                </Text>
                 <Text>{ref.contact}</Text>
               </View>
             ))
@@ -276,7 +265,8 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
         </View>
       </Page>
     </Document>
-  )
-}
+  );
+};
 
-export default StanfordPDF
+
+export default OxfordPDF

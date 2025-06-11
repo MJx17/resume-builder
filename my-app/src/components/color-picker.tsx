@@ -34,10 +34,12 @@ export default function ColorPicker({ value, onChange }: ColorPickerProps) {
                 aria-label={item.id}
                 className={clsx(
                   "w-6 h-6 rounded-full border-2 border-blue-300 transition-shadow",
-                  value === item.id && "ring-2 ring-offset-2 ring-white"
+                  "flex items-center justify-center pt-[1px] pl-[1px]", // ✅ center the dot
+                  value === item.id && "ring-2 ring-offset-2 ring-white text-white"
                 )}
                 style={{ backgroundColor: item.color }}
               />
+
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={4}>
               {item.id}

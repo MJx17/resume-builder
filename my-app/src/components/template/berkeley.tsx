@@ -50,10 +50,11 @@ export default function Berkley({ data, color }: TemplateProps) {
           )}
 
           {data.email && (
-            <div className="flex items-center gap-2 ">
-              <FaEnvelope className="text-[10px] " />
-              <span>{data.email}</span>
+            <div className="flex items-center gap-2 flex-wrap max-w-full">
+              <FaEnvelope className="text-[10px]" />
+              <span className="break-all">{data.email}</span>
             </div>
+
           )}
 
 

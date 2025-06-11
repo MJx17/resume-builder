@@ -1,216 +1,268 @@
-"use client"
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  Link,
+} from "@react-pdf/renderer";
+import { TemplateProps } from "@/types/types";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaLinkedin } from 'react-icons/fa';
+const styles = StyleSheet.create({
+  page: {
+    padding: 72,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+  },
+  section: {
+    marginBottom: 12,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+  title: {
+    fontSize: 11,
+    fontWeight: "medium",
+    marginBottom: 10,
+  },
+  contactImageRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    paddingBottom: 8,
+  },
+  contact: {
+    fontSize: 9,
+    lineHeight: 1.4,
+    maxWidth: "70%",
+  },
+  image: {
+    width: 70,
+    height: 70,
+    objectFit: "cover",
+    borderRadius: 4,
+  },
+  heading: {
+    fontSize: 10,
+    fontWeight: "bold",
+    marginBottom: 4,
+    textTransform: "uppercase",
+    color: "#333",
+  },
+  text: {
+    fontSize: 9,
+    textAlign: "justify",
+  },
+  rowBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  subheading: {
+    fontSize: 9,
+    fontWeight: "bold",
+  },
+  divider: {
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    marginVertical: 8,
+  },
+  twoColumnSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
+  leftColumn: {
+    width: "40%",
+    paddingRight: 4,
+    borderRightWidth: 1,
+    borderColor: "#000",
+  },
+  rightColumn: {
+    width: "60%",
+    paddingLeft: 4,
+  },
+  listItem: {
+    marginBottom: 2,
+  },
+  subHeading: {
+    fontWeight: 'bold',
+    fontSize: 10,
+  },
+  certBlock: {
+    marginBottom: 4,
+  },
+  smallText: {
+    fontSize: 9,
+    color: "gray",
+  },
+  center: {
+    textAlign: "center",
+  },
+    bullet: {
+    fontSize: 10,
+    marginLeft: 12,
+    textAlign: "justify",
+  },
+});
 
-export default function ModernResume({ data, color }: { data: any, color: string }) {
-  if (!data) return null
+const MitPDF = ({ data, color }: TemplateProps) => {
+  if (!data) return null;
 
   return (
-    <div className="">
+    <Document>
+      <Page size="A4" style={styles.page}>
 
-      <div className='max-w-[1200px]  text-[#222] text-xs font-sans space-y-6'>
-        <div className="mb-6 border-b-1 border-[#0a0a0a] flex justify-between items-center pb-5">
-          <div>
-            {/* Text content (name, title, contact info) */}
-            <div className="text-left text-[#222] text-lg font-bold" style={{color}}>
-              {data.name}
-              <p className="font-bold text-[9px] pb-5" style={{color}}>{data.title}</p>
-            </div>
+        {/* Name & Title */}
+        <View>
+          <Text style={[styles.name, { color }]}>{data.name}</Text>
+          <Text style={[styles.title, { color }]}>{data.title}</Text>
+        </View>
 
-            <div>
-              {data.address && (
-                <div className="flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-[10px] text-gray-600" />
-                  <span>{data.address}</span>
-                </div>
-              )}
-
-              {data.phone && (
-                <div className="flex items-center gap-2">
-                  <FaPhoneAlt className="text-[10px] text-gray-600" />
-                  <span>{data.phone}</span>
-                </div>
-              )}
-
-              {data.email && (
-                <div className="flex items-center gap-2">
-                  <FaEnvelope className="text-[10px] text-gray-600" />
-                  <span>{data.email}</span>
-                </div>
-              )}
-
-              {data.linkedin && (
-                <div className="flex items-center gap-2">
-                  <FaLinkedin className="text-[10px] text-gray-600" />
-                  <Link
-                    href={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    LinkedIn
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Image section on the right */}
-          <div className="pt-6 ">
-            {data.image && (
-              <Image
-                src={data.image}
-                alt="Profile"
-                width={100}
-                height={100}
-                className="object-cover bg-gray-200"
-              />
+        {/* Contact + Image */}
+        <View style={styles.contactImageRow}>
+          <View style={styles.contact}>
+            {data.address && <Text>{data.address}</Text>}
+            {data.phone && <Text>{data.phone}</Text>}
+            {data.email && <Text>{data.email}</Text>}
+            {data.linkedin && (
+              <Link src={data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}>
+                LinkedIn
+              </Link>
             )}
-          </div>
-        </div>
-
-
-        <div className="text-[9px] border-b-1 border-[#0a0a0a] pb-5">
-          {data.summary && (
-            <>
-              <div className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color}}>Summary</div>
-              <p className="text-[8px] text-gray-700 text-justify">{data.summary}</p>
-            </>
+          </View>
+          {data.image && (
+            <Image
+              style={styles.image}
+              src={typeof data.image === "string" ? data.image : URL.createObjectURL(data.image)}
+            />
           )}
-        </div>
+        </View>
 
+        {/* Summary with divider */}
+        {data.summary && (
+          <>
+            <View style={styles.section}>
+              <Text style={[styles.heading, { color }]}>Summary</Text>
+              <Text style={styles.text}>{data.summary}</Text>
+            </View>
+            <View style={styles.divider} />
+          </>
+        )}
 
-
-
-
-        <div className="flex text-[9px] text-gray-700 space-x-6">
-          {/* Left Column */}
-          <div className="w-1/2 pr-4 border-r border-[#0a0a0a] space-y-6">
-
-            {/* Education Section */}
+        {/* Two Column Section */}
+        <View style={styles.twoColumnSection}>
+          {/* Left Column - Education */}
+          <View style={styles.leftColumn}>
             {data.education && (
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-wide mb-2" style={{color}}>Education</div>
-                {data.education.map((edu: any, idx: number) => (
-                  <div key={idx} className="mb-2">
-                    <div className="font-semibold">{edu.school}</div>
-                    <div className="flex justify-between text-gray-600">
-                      <span>{edu.degree}</span>
-                      <span>{edu.year}</span>
-                    </div>
-                  </div>
+              <View style={styles.section}>
+                <Text style={[styles.heading, { color }]}>Education</Text>
+                {data.education.map((edu: any, i: number) => (
+                  <View key={i} style={{ marginBottom: 4 }}>
+                    <Text style={styles.subheading}>{edu.school}</Text>
+                    <View style={styles.rowBetween}>
+                      <Text>{edu.degree}</Text>
+                      <Text>{edu.year}</Text>
+                    </View>
+                  </View>
                 ))}
-              </div>
+              </View>
             )}
 
-
-            {/* Skills */}
             {data.skills && (
-              <div className="mb-6 ">
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Skills</div>
-                <ul className="text-[10px] text-gray-700 list-disc pl-5 grid-cols-2 grid">
-                  {data.skills.map((skill: string, idx: number) => (
-                    <li key={idx}>{skill}</li>
-                  ))}
-                </ul>
-              </div>
+              <View style={styles.section}>
+                <Text style={[styles.heading, { color }]} >Skills</Text>
+                {data.skills.map((skill: string, i: number) => (
+                  <Text key={i} style={styles.listItem}>• {skill}</Text>
+                ))}
+              </View>
             )}
 
-
-
-
-            {data.certifications && (
-              <div className="mb-6">
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Certifications</div>
+            {/* Certifications */}
+            {data.certifications?.length > 0 && (
+              <View style={styles.section}>
+                <Text style={[styles.heading, { color }]}>Certifications</Text>
                 {data.certifications.map((cert: any, idx: number) => (
-                  <div key={idx} className="mb-2">
-                    <div className="font-semibold text-[10px]">{cert.title}</div>
-                    <div className="text-[10px] text-gray-600 flex justify-between">
-                      <span>{cert.institution}</span>
-                      <span>{cert.year}</span>
-                    </div>
-                  </div>
+                  <View key={idx}>
+                    <Text style={styles.subheading}>{cert.title}</Text>
+                    <View style={styles.rowBetween}>
+                      <Text>
+                        {cert.institution}
+                      </Text>
+                      <Text> {cert.year}
+                      </Text>
+                    </View>
+                  </View>
                 ))}
-              </div>
+              </View>
             )}
+          </View>
 
-
-
-
-
-
-          </div>
-
-
-
-
-
-
-          {/* Right Column */}
-          <div className="w-2/3 ">
+          {/* Right Column - Other Sections (Placeholder) */}
+          <View style={styles.rightColumn}>
             {/* Experience Section */}
-            {data.experience && (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>Experience</div>
+            {data.experience?.length > 0 && (
+              <View style={styles.section}>
+                <Text style={[styles.heading, { color },]}>Experience</Text>
                 {data.experience.map((exp: any, idx: number) => (
-                  <div key={idx} className="mb-3">
-                    <div className="flex justify-between font-semibold">
-                      <span>{exp.role} at {exp.company}</span>
-                      <span className="text-gray-500">{exp.duration}</span>
-                    </div>
-                    <ul className="list-disc pl-5 text-gray-600 mt-1 space-y-1 text-justify">
-                      {Array.isArray(exp.description)
-                        ? exp.description.map((item: string, i: number) => (
-                          <li key={i}>{item.trim()}</li>
-                        ))
-                        : typeof exp.description === 'string'
-                          ? exp.description
-                            .split("•")
-                            .filter((item: string) => item.trim() !== "")
-                            .map((item: string, i: number) => (
-                              <li key={i}>{item.trim()}</li>
-                            ))
-                          : null}
-                    </ul>
-                  </div>
+                  <View key={idx} style={{ marginBottom: 6 }}>
+                    <View style={styles.rowBetween}>
+                      <Text style={styles.subheading}>
+                        {exp.position} at {exp.company}
+                      </Text>
+                      <Text style={styles.smallText}>{exp.duration}</Text>
+                    </View>
+                    {Array.isArray(exp.description)
+                      ? exp.description.map((desc: string, i: number) => (
+                        <Text key={i} style={styles.bullet}>
+                          • {desc.trim()}
+                        </Text>
+                      ))
+                      : typeof exp.description === "string"
+                        ? exp.description
+                          .split("•")
+                          .filter((item: string) => item.trim() !== "")
+                          .map((item: string, i: number) => (
+                            <Text key={i} style={styles.bullet}>
+                              • {item.trim()}
+                            </Text>
+                          ))
+                        : null}
+                  </View>
                 ))}
-              </div>
+              </View>
             )}
 
+            {/* References Section */}
+            <View style={styles.section}>
+              <Text style={[styles.heading, { color }]}>References</Text>
+              {data.references?.length > 0 ? (
+                data.references.map((ref: any, idx: number) => (
+                  <View key={idx} style={{ marginBottom: 4 }}>
+                    <Text style={styles.subheading}>{ref.name}</Text>
+                    <Text style={styles.text}>{ref.company}</Text>
+                    <Text style={styles.text}>{ref.contact}</Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={[styles.text, styles.center]}>
+                  References available upon request
+                </Text>
+              )}
+            </View>
+          </View>
 
-            {data.references ? (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
-                {data.references.map((ref: any, idx: number) => (
-                  <div key={idx} className="mb-2 text-[10px]">
-                    <div className="font-semibold">{ref.name}</div>
-                    <div className="text-gray-600">{ref.position} at {ref.company}</div>
-                    <div className="text-gray-600">{ref.contact}</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{color}}>References</div>
-                <div className="text-[10px] text-gray-600">Available upon request</div>
-              </div>
-            )}
-          </div>
-        </div>
-
-
+        </View>
 
 
+      </Page>
+    </Document>
+  );
+};
 
-
-
-
-
-
-
-      </div>
-    </div>
-  )
-}
+export default MitPDF;

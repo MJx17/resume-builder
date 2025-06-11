@@ -1,5 +1,6 @@
 // components/pdf/StanfordPDF.tsx
 import React from "react";
+
 import {
   Document,
   Page,
@@ -8,83 +9,83 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
+import { TemplateProps } from '@/types/types';
 
-const styles = (themeColor: string) =>
-  StyleSheet.create({
-    page: {
-      padding: 72,
-      fontSize: 11,
-      fontFamily: "Helvetica",
-      color: "#000",
-    },
-    heading: {
-      fontSize: 13,
-      fontWeight: "bold",
-      color: themeColor,
-      marginBottom: 4,
-      textTransform: "uppercase",
-    },
-    subheading: {
-      fontSize: 11,
-      fontWeight: "bold",
-      marginBottom: 2,
-    },
-    smallText: {
-      fontSize: 9,
-      color: "gray",
-    },
-    text: {
-      fontSize: 10,
-      marginBottom: 2,
-      textAlign: "justify",
-    },
-    section: {
-      marginBottom: 12,
-    },
-    borderBottom: {
-      borderBottomWidth: 1,
-      borderBottomColor: "#444",
-      marginVertical: 6,
-    },
-    rowBetween: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    sandwichBorder: {
-      borderTopWidth: 1,
-      borderTopColor: "#444",
-      borderBottomWidth: 1,
-      borderBottomColor: "#444",
-      paddingVertical: 4,
-      marginBottom: 6,
-    },
-    center: {
-      textAlign: "center",
-    },
 
-    bullet: {
-      fontSize: 10,
-      marginLeft: 12,
-      textAlign: "justify",
-    },
-  });
+const styles = StyleSheet.create({
+  page: {
+    padding: 72,
+    fontSize: 11,
+    fontFamily: "Helvetica",
+    color: "#000",
+  },
+  heading: {
+    fontSize: 13,
+    fontWeight: "bold",
+    marginBottom: 4,
+    textTransform: "uppercase",
+  },
+  subheading: {
+    fontSize: 11,
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+  smallText: {
+    fontSize: 9,
+    color: "gray",
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 2,
+    textAlign: "justify",
+  },
+  section: {
+    marginBottom: 12,
+  },
+  borderBottom: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+    marginVertical: 6,
+  },
+  rowBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  sandwichBorder: {
+    borderTopWidth: 1,
+    borderTopColor: "#444",
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+    paddingVertical: 4,
+    marginBottom: 6,
+  },
+  center: {
+    textAlign: "center",
+  },
 
-const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
-  const s = styles(color);
+  bullet: {
+    fontSize: 10,
+    marginLeft: 12,
+    textAlign: "justify",
+  },
+});
+
+const StanfordPDF = ({ data, color }: TemplateProps) => {
+
 
   return (
     <Document>
-      <Page size="A4" style={s.page}>
+      <Page size="A4" style={styles.page}>
         {/* Header */}
-        <View style={s.section}>
-          <Text style={[s.heading, { textAlign: "center" }]}>{data.name}</Text>
+        <View style={styles.section}>
+          <Text style={[styles.heading, { color }, { textAlign: "center" }]}>{data.name}</Text>
           <View style={{ textAlign: "center" }}>
-            {data.address && <Text style={s.smallText}>{data.address}</Text>}
-            {data.phone && <Text style={s.smallText}>{data.phone}</Text>}
-            {data.email && <Text style={s.smallText}>{data.email}</Text>}
+            {data.address && <Text style={styles.smallText}>{data.address}</Text>}
+            {data.phone && <Text style={styles.smallText}>{data.phone}</Text>}
+            {data.email && <Text style={styles.smallText}>{data.email}</Text>}
             {data.linkedin && (
               <Link
-                style={s.smallText}
+                style={styles.smallText}
                 src={
                   data.linkedin.startsWith("http")
                     ? data.linkedin
@@ -94,31 +95,31 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
                 LinkedIn
               </Link>
             )}
-            <View style={s.borderBottom} />
+            <View style={styles.borderBottom} />
           </View>
         </View>
 
 
         {/* Summary */}
         {data.summary && (
-          <View style={s.section}>
-            <Text style={s.heading}>Summary</Text>
-            <Text style={s.text}>{data.summary}</Text>
+          <View style={styles.section}>
+            <Text style={[styles.heading, { color },]}>Summary</Text>
+            <Text style={styles.text}>{data.summary}</Text>
           </View>
         )}
 
 
-        <View style={s.borderBottom} />
+        <View style={styles.borderBottom} />
         {/* Education */}
         {data.education?.length > 0 && (
-          <View style={s.section}>
-            <Text style={s.heading}>Education</Text>
+          <View style={styles.section}>
+            <Text style={[styles.heading, { color },]}>Education</Text>
             {data.education.map((edu: any, idx: number) => (
               <View key={idx} style={{ marginBottom: 6 }}>
-                <Text style={s.subheading}>{edu.school}</Text>
-                <View style={s.rowBetween}>
-                  <Text style={s.text}>{edu.degree}</Text>
-                  <Text style={s.text}>{edu.year}</Text>
+                <Text style={styles.subheading}>{edu.school}</Text>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.text}>{edu.degree}</Text>
+                  <Text style={styles.text}>{edu.year}</Text>
                 </View>
               </View>
             ))}
@@ -126,22 +127,22 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
         )}
 
 
-        <View style={s.borderBottom} />
+        <View style={styles.borderBottom} />
         {/* Experience */}
         {data.experience?.length > 0 && (
-          <View style={s.section}>
-            <Text style={s.heading}>Experience</Text>
+          <View style={styles.section}>
+            <Text style={[styles.heading, { color },]}>Experience</Text>
             {data.experience.map((exp: any, idx: number) => (
               <View key={idx} style={{ marginBottom: 6 }}>
-                <View style={s.rowBetween}>
-                  <Text style={s.subheading}>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.subheading}>
                     {exp.role} at {exp.company}
                   </Text>
-                  <Text style={s.smallText}>{exp.duration}</Text>
+                  <Text style={styles.smallText}>{exp.duration}</Text>
                 </View>
                 {Array.isArray(exp.description)
                   ? exp.description.map((desc: string, i: number) => (
-                    <Text key={i} style={s.bullet}>
+                    <Text key={i} style={styles.bullet}>
                       • {desc.trim()}
                     </Text>
                   ))
@@ -150,7 +151,7 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
                       .split("•")
                       .filter((item: string) => item.trim() !== "")
                       .map((item: string, i: number) => (
-                        <Text key={i} style={s.bullet}>
+                        <Text key={i} style={styles.bullet}>
                           • {item.trim()}
                         </Text>
                       ))
@@ -160,14 +161,14 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
           </View>
         )}
 
-        <View style={s.borderBottom} />
+        <View style={styles.borderBottom} />
         {/* Skills */}
         {data.skills?.length > 0 && (
-          <View style={s.section}>
-            <Text style={s.heading}>Skills</Text>
+          <View style={styles.section}>
+            <Text style={[styles.heading, { color },]}>Skills</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               {data.skills.map((skill: string, idx: number) => (
-                <Text key={idx} style={[s.text, { width: "33.33%" }]}>
+                <Text key={idx} style={[styles.text, { width: "33.33%" }]}>
                   • {skill}
                 </Text>
               ))}
@@ -178,18 +179,18 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
 
 
         {/* Certifications */}
-        <View style={s.borderBottom} />
+        <View style={styles.borderBottom} />
         {data.certifications?.length > 0 && (
-          <View style={s.section}>
-            <Text style={s.heading}>Certifications</Text>
+          <View style={styles.section}>
+            <Text style={[styles.heading, { color },]}>Certifications</Text>
             {data.certifications.map((cert: any, idx: number) => (
               <View key={idx}>
 
-                <Text style={s.subheading}>{cert.title}</Text>
-                <View style={s.rowBetween}>
-                  <Text style={s.smallText}>
+                <Text style={styles.subheading}>{cert.title}</Text>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.smallText}>
                     {cert.institution}
-                    <Text style={s.smallText}>
+                    <Text style={styles.smallText}>
                       {cert.year}
                     </Text>
 
@@ -201,26 +202,26 @@ const StanfordPDF = ({ data, color }: { data: any; color: string }) => {
         )}
 
         {/* References */}
-        <View style={s.borderBottom} />
-        <View style={s.section}>
-          <Text style={s.heading}>References</Text>
+        <View style={styles.borderBottom} />
+        <View style={styles.section}>
+          <Text style={[styles.heading, { color },]}>References</Text>
           {data.references?.length > 0 ? (
             data.references.map((ref: any, idx: number) => (
               <View key={idx}>
-                <Text style={s.subheading}>{ref.name}</Text>
-                <Text style={s.text}>
+                <Text style={styles.subheading}>{ref.name}</Text>
+                <Text style={styles.text}>
                   {ref.company}
                 </Text>
-                <Text style={s.text}>{ref.contact}</Text>
+                <Text style={styles.text}>{ref.contact}</Text>
               </View>
             ))
           ) : (
-            <Text style={[s.text, s.center]}>
+            <Text style={[styles.text, styles.center]}>
               References available upon request
             </Text>
           )}
         </View>
-        <View style={s.borderBottom} />
+        <View style={styles.borderBottom} />
 
 
 
